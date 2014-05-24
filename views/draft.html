@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+{{>head}}
+
+<body>
+
+<script type="text/javascript" src="/files/js/encode.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+{{#draft}}
+<script type="text/javascript" src="/files/js/views/draft.js"></script>
+<audio id="dingSound" controls="true" src="/files/sound/ding.wav"></audio>
+{{/draft}}
+{{^draft}}
+<script type="text/javascript" src="/files/js/views/spectate.js"></script>
+{{/draft}}
+
+{{>mainHeader}}
+
+<div id="bodyFirstBorder">
+<div id="bodySecondBorder">
+<div id="body">
+
+<section id="heroes">
+    <header id="heroesHeader">
+        <h1>H E R O E S</h1>
+    </header>
+
+    <section id="heroesIcons">
+
+        <section id="heroesRadiant">
+
+            <section id="radiantSTR">
+                <h4 id="radiantSTRTitle">The Radiant: STRENGTH</h4>
+                <img class="pictureArea locked" id="earthshaker" src="/files/image/earthshaker.png" title="Earthshaker">
+                <img class="pictureArea locked" id="sven" src="/files/image/sven.png" title="Sven">
+                <img class="pictureArea locked" id="tiny" src="/files/image/tiny.png" title="Tiny">
+                <img class="pictureArea locked" id="kunkka" src="/files/image/kunkka.png" title="Kunkka">
+                <img class="pictureArea locked" id="beastmaster" src="/files/image/beastmaster.png" title="Beastmaster">
+                <img class="pictureArea locked" id="dragon_knight" src="/files/image/dragon_knight.png" title="Dragon Knight">
+                <img class="pictureArea locked" id="clockwerk" src="/files/image/clockwerk.png" title="Clockwerk">
+                <img class="pictureArea locked" id="omniknight" src="/files/image/omniknight.png" title="Omniknight">
+                <img class="pictureArea locked" id="huskar" src="/files/image/huskar.png" title="Huskar">
+                <img class="pictureArea locked" id="alchemist" src="/files/image/alchemist.png" title="Alchemist">
+                <img class="pictureArea locked" id="brewmaster" src="/files/image/brewmaster.png" title="Brewmaster">
+                <img class="pictureArea locked" id="treant_protector" src="/files/image/treant_protector.png"
+                     title="Treant Protector">
+                <img class="pictureArea locked" id="whisp" src="/files/image/whisp.png" title="Wisp">
+                <img class="pictureArea locked" id="centaur" src="/files/image/centaur.png" title="Centaur">
+                <img class="pictureArea locked" id="shredder" src="/files/image/shredder.png" title="Timbersaw">
+                <img class="pictureArea locked" id="bristleback" src="/files/image/bristleback.png" title="Bristleback">
+                <img class="pictureArea locked" id="tusk" src="/files/image/tusk.png" title="Tusk">
+                <img class="pictureArea locked" id="elder_titan" src="/files/image/elder_titan.png" title="Elder Titan">
+                <img class="pictureArea locked" id="legion_commander" src="/files/image/legion_commander.png"
+                     title="Legion Commander">
+                <img class="pictureArea locked" id="earth_spirit" src="/files/image/earth_spirit.png" title="Earth Spirit">
+                <img class="pictureArea locked" id="phoenix" src="/files/image/phoenix.png" title="Phoenix">
+            </section>
+
+            <section id="radiantAGI">
+                <h4 id="radiantAGITitle">AGILITY</h4>
+                <img class="pictureArea locked" id="anti_mage" src="/files/image/anti_mage.png" title="Anti-Mage">
+                <img class="pictureArea locked" id="drow_ranger" src="/files/image/drow_ranger.png" title="Drow Ranger">
+                <img class="pictureArea locked" id="juggernaut" src="/files/image/juggernaut.png" title="Juggernaut">
+                <img class="pictureArea locked" id="mirana" src="/files/image/mirana.png" title="Mirana">
+                <img class="pictureArea locked" id="morphling" src="/files/image/morphling.png" title="Morphling">
+                <img class="pictureArea locked" id="phantom_lancer" src="/files/image/phantom_lancer.png"
+                     title="Phantom Lancer">
+                <img class="pictureArea locked" id="vengeful_spirit" src="/files/image/vengeful_spirit.png"
+                     title="Vengeful Spirit">
+                <img class="pictureArea locked" id="riki" src="/files/image/riki.png" title="Riki">
+                <img class="pictureArea locked" id="sniper" src="/files/image/sniper.png" title="Sniper">
+                <img class="pictureArea locked" id="templar_assassin" src="/files/image/templar_assassin.png"
+                     title="Templar Assassin">
+                <img class="pictureArea locked" id="luna" src="/files/image/luna.png" title="Luna">
+                <img class="pictureArea locked" id="bounty_hunter" src="/files/image/bounty_hunter.png" title="Bounty Hunter">
+                <img class="pictureArea locked" id="ursa" src="/files/image/ursa.png" title="Ursa">
+                <img class="pictureArea locked" id="gyrocopter" src="/files/image/gyrocopter.png" title="Gyrocopter">
+                <img class="pictureArea locked" id="lone_druid" src="/files/image/lone_druid.png" title="Lone Druid">
+                <img class="pictureArea locked" id="naga_siren" src="/files/image/naga_siren.png" title="Naga Siren">
+                <img class="pictureArea locked" id="troll_warlord" src="/files/image/troll_warlord.png" title="Troll Warlord">
+                <img class="pictureArea locked" id="ember_spirit" src="/files/image/ember_spirit.png" title="Ember Spirit">
+            </section>
+
+            <section id="radiantINT">
+                <h4 id="radiantINTTitle">INTELLIGENCE</h4>
+                <img class="pictureArea locked" id="crystal_maiden" src="/files/image/crystal_maiden.png"
+                     title="Crystal Maiden">
+                <img class="pictureArea locked" id="puck" src="/files/image/puck.png" title="Puck">
+                <img class="pictureArea locked" id="storm_spirit" src="/files/image/storm_spirit.png" title="Storm Spirit">
+                <img class="pictureArea locked" id="windrunner" src="/files/image/windrunner.png" title="Windrunner">
+                <img class="pictureArea locked" id="zeus" src="/files/image/zeus.png" title="Zeus">
+                <img class="pictureArea locked" id="lina" src="/files/image/lina.png" title="Lina">
+                <img class="pictureArea locked" id="shadow_shaman" src="/files/image/shadow_shaman.png" title="Shadow Shaman">
+                <img class="pictureArea locked" id="tinker" src="/files/image/tinker.png" title="Tinker">
+                <img class="pictureArea locked" id="natures_prophet" src="/files/image/natures_prophet.png"
+                     title="Nature's Prophet">
+                <img class="pictureArea locked" id="enchantress" src="/files/image/enchantress.png" title="Enchantress">
+                <img class="pictureArea locked" id="jakiro" src="/files/image/jakiro.png" title="Jakiro">
+                <img class="pictureArea locked" id="chen" src="/files/image/chen.png" title="Chen">
+                <img class="pictureArea locked" id="silencer" src="/files/image/silencer.png" title="Silencer">
+                <img class="pictureArea locked" id="ogre_magi" src="/files/image/ogre_magi.png" title="Ogre Magi">
+                <img class="pictureArea locked" id="rubick" src="/files/image/rubick.png" title="Rubick">
+                <img class="pictureArea locked" id="disruptor" src="/files/image/disruptor.png" title="Disruptor">
+                <img class="pictureArea locked" id="keeper_of_the_light" src="/files/image/keeper_of_the_light.png"
+                     title="Keeper of the Light">
+                <img class="pictureArea locked" id="skywrath_mage" src="/files/image/skywrath_mage.png" title="Skywrath Mage">
+            </section>
+
+        </section>
+
+        <section id="heroesDire">
+
+            <section id="direSTR">
+                <h4 id="direSTRTitle">The Dire: STRENGTH</h4>
+                <img class="pictureArea locked" id="axe" src="/files/image/axe.png" title="Axe">
+                <img class="pictureArea locked" id="pudge" src="/files/image/pudge.png" title="Pudge">
+                <img class="pictureArea locked" id="sand_king" src="/files/image/sand_king.png" title="Sand King">
+                <img class="pictureArea locked" id="slardar" src="/files/image/slardar.png" title="Slardar">
+                <img class="pictureArea locked" id="tidehunter" src="/files/image/tidehunter.png" title="Tidehunter">
+                <img class="pictureArea locked" id="skeleton_king" src="/files/image/skeleton_king.png" title="Skeleton King">
+                <img class="pictureArea locked" id="lifestealer" src="/files/image/lifestealer.png" title="Lifestealer">
+                <img class="pictureArea locked" id="night_stalker" src="/files/image/night_stalker.png" title="Night Stalker">
+                <img class="pictureArea locked" id="doom_bringer" src="/files/image/doom_bringer.png" title="Doom Bringer">
+                <img class="pictureArea locked" id="spirit_breaker" src="/files/image/spirit_breaker.png"
+                     title="Spirit Breaker">
+                <img class="pictureArea locked" id="lycanthrope" src="/files/image/lycanthrope.png" title="Lycanthrope">
+                <img class="pictureArea locked" id="chaos_knight" src="/files/image/chaos_knight.png" title="Chaos Knight">
+                <img class="pictureArea locked" id="undying" src="/files/image/undying.png" title="Undying">
+                <img class="pictureArea locked" id="magnus" src="/files/image/magnus.png" title="Magnus">
+                <img class="pictureArea locked" id="abaddon" src="/files/image/abaddon.png" title="Abaddon">
+            </section>
+
+            <section id="direAGI">
+                <h4 id="direAGITitle">AGILITY</h4>
+                <img class="pictureArea locked" id="bloodseeker" src="/files/image/bloodseeker.png" title="Bloodseeker">
+                <img class="pictureArea locked" id="shadow_fiend" src="/files/image/shadow_fiend.png" title="Shadow Fiend">
+                <img class="pictureArea locked" id="razor" src="/files/image/razor.png" title="Razor">
+                <img class="pictureArea locked" id="venomancer" src="/files/image/venomancer.png" title="Venomancer">
+                <img class="pictureArea locked" id="faceless_void" src="/files/image/faceless_void.png" title="Faceless Void">
+                <img class="pictureArea locked" id="phantom_assassin" src="/files/image/phantom_assassin.png"
+                     title="Phantom Assassin">
+                <img class="pictureArea locked" id="viper" src="/files/image/viper.png" title="Viper">
+                <img class="pictureArea locked" id="clinkz" src="/files/image/clinkz.png" title="Clinkz">
+                <img class="pictureArea locked" id="broodmother" src="/files/image/broodmother.png" title="Broodmother">
+                <img class="pictureArea locked" id="weaver" src="/files/image/weaver.png" title="Weaver">
+                <img class="pictureArea locked" id="spectre" src="/files/image/spectre.png" title="Spectre">
+                <img class="pictureArea locked" id="meepo" src="/files/image/meepo.png" title="Meepo">
+                <img class="pictureArea locked" id="nyx_assassin" src="/files/image/nyx_assassin.png" title="Nyx Assassin">
+                <img class="pictureArea locked" id="slark" src="/files/image/slark.png" title="Slark">
+                <img class="pictureArea locked" id="medusa" src="/files/image/medusa.png" title="Medusa">
+                <img class="pictureArea locked" id="terrorblade" src="/files/image/terrorblade.png" title="Terrorblade">
+            </section>
+
+            <section id="direINT">
+                <h4 id="direINTTitle">INTELLIGENCE</h4>
+                <img class="pictureArea locked" id="bane" src="/files/image/bane.png" title="Bane">
+                <img class="pictureArea locked" id="lich" src="/files/image/lich.png" title="Lich">
+                <img class="pictureArea locked" id="lion" src="/files/image/lion.png" title="Lion">
+                <img class="pictureArea locked" id="witch_doctor" src="/files/image/witch_doctor.png" title="Witch Doctor">
+                <img class="pictureArea locked" id="enigma" src="/files/image/enigma.png" title="Enigma">
+                <img class="pictureArea locked" id="necrolyte" src="/files/image/necrolyte.png" title="Necrolyte">
+                <img class="pictureArea locked" id="warlock" src="/files/image/warlock.png" title="Warlock">
+                <img class="pictureArea locked" id="queen_of_pain" src="/files/image/queen_of_pain.png" title="Queen Of Pain">
+                <img class="pictureArea locked" id="death_prophet" src="/files/image/death_prophet.png" title="Death Prophet">
+                <img class="pictureArea locked" id="pugna" src="/files/image/pugna.png" title="Pugna">
+                <img class="pictureArea locked" id="dazzle" src="/files/image/dazzle.png" title="Dazzle">
+                <img class="pictureArea locked" id="leshrac" src="/files/image/leshrac.png" title="Leshrac">
+                <img class="pictureArea locked" id="dark_seer" src="/files/image/dark_seer.png" title="Dark Seer">
+                <img class="pictureArea locked" id="batrider" src="/files/image/batrider.png" title="Batrider">
+                <img class="pictureArea locked" id="ancient_apparition" src="/files/image/ancient_apparition.png"
+                     title="Ancient Apparition">
+                <img class="pictureArea locked" id="invoker" src="/files/image/invoker.png" title="Invoker">
+                <img class="pictureArea locked" id="outlord_destroyer" src="/files/image/outlord_destroyer.png"
+                     title="Outlord Destroyer">
+                <img class="pictureArea locked" id="shadow_demon" src="/files/image/shadow_demon.png" title="Shadow Demon">
+                <img class="pictureArea locked" id="visage" src="/files/image/visage.png" title="Visage">
+            </section>
+
+        </section>
+    </section>
+</section>
+
+<section id="right">
+    <section id="info">
+        <header id="infoHeader">
+            <h1>D R A F T</h1>
+        </header>
+
+        <section id="infoSides">
+
+            <section id="infoRadiantName">
+                <h1>Radiant</h1>
+
+                <div id="radiantPlayer">( ... )</div>
+            </section>
+
+            <section id="infoDireName">
+                <h1>Dire</h1>
+
+                <div id="direPlayer">( ... )</div>
+            </section>
+
+            <h1 id="time"><span id="timeSec">0</span></h1>
+
+            <section id="infoRadiantTime">
+                <h1 id="radiantTime"><span id="radiantTimeMin">0</span>:<span id="radiantTimeSec">00</span></h1>
+            </section>
+
+            <section id="infoDireTime">
+                <h1 id="direTime"><span id="direTimeMin">0</span>:<span id="direTimeSec">00</span></h1>
+            </section>
+
+            <h1 id="bans">Bans</h1>
+
+            <section id="infoRadiantBan">
+                <img class="pictureAreaBanPick" id="radiantBan1" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick" id="radiantBan2" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick" id="radiantBan3" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick" id="radiantBan4" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick" id="radiantBan5" src="/files/image/empty.png">
+            </section>
+
+            <section id="infoDireBan">
+                <img class="pictureAreaBanPick" id="direBan1" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick" id="direBan2" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick" id="direBan3" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick" id="direBan4" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick" id="direBan5" src="/files/image/empty.png">
+            </section>
+
+            <h1 id="picks">Picks</h1>
+
+            <section id="infoRadiantPick">
+                <img class="pictureAreaBanPick radiantPick" id="radiantPick1" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick radiantPick" id="radiantPick2" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick radiantPick" id="radiantPick3" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick radiantPick" id="radiantPick4" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick radiantPick" id="radiantPick5" src="/files/image/empty.png">
+
+                <section id="laneLegend">
+                    <div id="midLane">Mid</div>
+                    <div id="topLane">Top</div>
+                    <div id="botLane">Bot</div>
+                    <div id="woodLane">Woods</div>
+                    <div id="roamLane">Roam</div>
+                </section>
+            </section>
+
+            <section id="infoDirePick">
+                <img class="pictureAreaBanPick direPick" id="direPick1" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick direPick" id="direPick2" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick direPick" id="direPick3" src="/files/image/empty.png">
+                <img class="pictureAreaBanPick direPick" id="direPick4" src="/files/image/empty.png"><br/>
+                <img class="pictureAreaBanPick direPick" id="direPick5" src="/files/image/empty.png">
+            </section>
+
+        </section>
+
+        <section id="infoButtons">
+            {{#draft}}
+            <button id="radiantButton">Radiant</button>
+            <button id="randomButton">Random</button>
+            <button id="opponentChooseButton">Opponent Choose</button>
+            <button id="direButton">Dire</button>
+            <button id="banButton">Ban</button>
+            <button id="pickButton">Pick</button>
+            <button id="readyButton">Ready</button>
+            <button id="redraftButton">Redraft</button>
+            <button id="laneButton">Validate Lanes</button>
+            <button id="tournamentVersionButton">Tournament Version</button>
+            <button id="latestVersionButton">Latest Version</button>
+            {{/draft}}
+        </section>
+
+    </section>
+
+    <section id="chat">
+        <header id="chatHeader">
+            <h1>C O M M U N I C A T I O N S</h1>
+        </header>
+
+        <div id="chatScreen">
+            <p id="chatScreenContent"></p>
+        </div>
+
+        <div id="chatEntryArea">
+            Say <input id="chatMessage" type="text" name="message"/> <span id="spectatorCount">0</span> Spectators
+        </div>
+
+    </section>
+</section>
+
+</div>
+</div>
+</div>
+
+{{>mainFooter}}
+
+</body>
+</html>

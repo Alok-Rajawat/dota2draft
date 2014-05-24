@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+{{>head}}
+
+<body>
+
+<script type="text/javascript" src="/files/js/views/index.js"></script>
+<div id="fb-root"></div>
+
+{{>mainHeader}}
+
+<div id="bodyFirstBorder">
+    <div id="bodySecondBorder">
+        <div id="body">
+
+            <div id="newsAndStats">
+
+                <section id="news">
+                    <header><h1>News</h1></header>
+                    <h4>What is <a href="/about">dota2draft</a> ?</h4>
+
+                    <h2>UPDATE</h2>
+
+                    <h3>( 28/04/2014 )</h3>
+                    <ul>
+                        <li>Updated captain's draft to match 6.81 (27 heroes, 6 bans).</li>
+                    </ul>
+                    <h3>( 09/03/2014 )</h3>
+                    <ul>
+                        <li>Improved network implementation.</li>
+                    </ul>
+                    <h3>( 03/03/2014 )</h3>
+                    <ul>
+                        <li>Added Ember Spirit to Captain's Mode.</li>
+                    </ul>
+                    <h3>( 03/02/2014 )</h3>
+                    <ul>
+                        <li>Added Phoenix and Terrorblade in Latest version.</li>
+                    </ul>
+                    <h3>( 14/01/2014 )</h3>
+                    <ul>
+                        <li>Happy New Year !</li>
+                        <li>Fixed Captain's Draft pool to 8 str / 8 agi / 8 int.</li>
+                        <li>Replaced greyscale by opacity for unavailable heroes.</li>
+                        <li>Fixed timer for Captain's Draft.</li>
+                    </ul>
+                </section>
+
+                <section id="stats">
+                    <header id="statsHeader"><h1>Server Stats</h1></header>
+                    <ul>
+                        <li>Server session began - {{server_state_date}}</li>
+                        <li>Server status - {{server_status}}</li>
+                        <li>Drafts started for the session - {{drafts_started_count}}</li>
+                        <li>Redrafts - {{redrafts_count}}</li>
+                        <li>Drafts in progress - {{drafts_running_count}}</li>
+                        <li>Drafts ended - {{drafts_ended_count}}</li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <div id="draftAndLinks">
+
+                <section id="draft">
+                    <header><h1>Drafts</h1></header>
+                    <h2 id="nicknameH2">Nickname</h2><input id="nickname" type="text" name="nickname"/>
+
+                    <div id="mode" class="centered"><input id="cm" type="radio" name="radio" checked="checked"/><label for="cm"
+                                                                                                      id="cmLabel">Captain's
+                        Mode</label><input id="cd" type="radio" name="radio"/><label for="cd" id="cdLabel">Captain's
+                        Draft</label></div>
+                    <h2 id="randomRoomH2">Random Room</h2>
+                    <div class="centered">
+                        <button id="randomRoomButton">Start</button>
+                        <button id="listRoomsButton">Show Drafts</button>
+                    </div>
+                    <h2 id="privateRoomH2">Private Room</h2>
+                    <div class="centered">
+                        <button id="createPrivateButton">Create</button>
+                    </div>
+                    <div class="centered"><input id="privateId" type="text" name="privateId"/><br/>
+                        <button id="joinPrivateButton">Join</button>
+                        <button id="spectatePrivateButton">Spectate</button>
+                    </div>
+                </section>
+
+                <section id="links">
+                    <header><h1>Links</h1></header>
+                    <div data-href="http://dota2draft.net/" data-send="false" data-layout="button_count"
+                         data-width="450" data-show-faces="false" data-colorscheme="dark" data-action="recommend"
+                         class="fb-like"></div>
+                    <div data-action="share" data-annotation="bubble" data-href="http://dota2draft.net/"
+                         class="g-plus"></div>
+                    <ul>
+                        <li><a href="http://blog.dota2.com/">DOTA 2 News</a></li>
+                        <li><a href="http://www.dota2wiki.com/wiki/Main_Page">Dota 2 Wiki</a></li>
+                        <li><a href="http://boards.4chan.org/vg/catalog#s=dota">/d2g/</a></li>
+                        <li><a href="http://www.cyborgmatt.com/">Cyborgmatt's blog</a></li>
+                        <li><a href="http://www.joindota.com/en/start">joinDOTA</a></li>
+                        <li><a href="http://www.teamliquid.net/dota2/">TeamLiquid DOTA 2</a></li>
+                        <li><a href="http://www.reddit.com/r/DotA2/">Reddit DOTA 2</a></li>
+                        <li><a href="http://www.reddit.com/r/dota2draft/">Reddit dota2draft</a></li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{>mainFooter}}
+
+</body>
+</html>

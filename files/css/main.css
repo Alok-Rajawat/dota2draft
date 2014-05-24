@@ -1,0 +1,1049 @@
+/* Font */
+@font-face {
+	font-family : 'TrojanPro';
+	src: url('trajanpro-regular.otf');
+}
+
+/* Main Header */
+#header
+{
+    width : 100%;
+    height : 50px;
+    border-bottom : 2px #6d6d6b solid;
+    background-color: #1d1d1b;
+}
+
+#header h1
+{
+    line-height: 50px;
+    font-size : large;
+    color : #cdcdcd;
+    text-align : center;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    text-shadow: 1px 1px 10px #dddddd;
+}
+
+#header h1 a
+{
+    color : #cdcdcd;
+    text-shadow: 1px 1px 10px #dddddd;
+    text-decoration: none;
+}
+
+/* Main Footer */
+#footer
+{
+    width : 100%;
+    margin-top : 20px;
+    margin-bottom : 20px;
+    text-align : center;
+}
+
+#footer h1
+{
+    line-height : 35px;
+    font-size : xx-small;
+    color : #6d6d6b;
+    text-align : center;
+    font-weight : normal;
+    vertical-align : middle;
+    font-family : Arial,serif;
+}
+
+#advert, #copyright
+{
+    display : inline-block;
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right : 10px;
+    vertical-align : middle;
+}
+
+#advert
+{
+    width : 728px;
+    height : 90px;
+    background: no-repeat center;
+}
+
+#copyright
+{
+    border : 1px #6d6d6b solid;
+    width : 350px;
+    height : 35px;
+}
+
+#banniere
+{
+    width : 728px;
+    height : 90px;
+}
+
+/* Static body */
+body
+{
+	background-color : #2d2d2b;
+}
+
+#bodyFirstBorder
+{
+	width : 980px;
+	margin-top : 20px;
+	margin-left : auto;
+	margin-right : auto;
+	border : 1px #6d6d6b solid;
+	border-radius: 10px;
+	box-shadow : 8px 6px 8px black;
+}
+
+#bodySecondBorder
+{
+	width : 960px;
+	margin-left : auto;
+	margin-right : auto;
+	border : 10px #1d1d1b solid;
+	border-radius: 10px;
+	background-color : #1d1d1b;
+}
+
+#body 
+{
+	width : 952px;
+	border-radius: 10px;
+	color : #cdcdcd;
+	border : 4px #660000 ridge;
+	background-color : #2d2d2b;
+}
+
+a
+{
+    color : white;
+}
+
+/* Index props */
+#newsAndStats
+{
+	width : 670px;
+	height : 100%;
+	display: inline-block;
+	vertical-align: top;
+	border-right : 2px #6d6d6b solid;
+}
+
+#draftAndLinks
+{
+    width : 278px;
+    height : 100%;
+    display: inline-block;
+    margin-left : -4px;
+    vertical-align: top;
+}
+
+
+#newsAndStats header h1, #draftAndLinks header h1
+{
+    line-height: 40px;
+    font-size : medium;
+    font-weight : normal;
+    color : #cdcdcd;
+    text-align : center;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    border-bottom : 2px #6d6d6b solid;
+    background-color: #1d1d1b;
+}
+
+#news
+{
+	width : 100%;
+	height : 510px;
+	display: inline-block;
+	border-bottom : 2px #6d6d6b solid;
+}
+
+#news h2
+{
+	font-size : x-large;
+	color : #FFFFFF; 
+	font-family : TrojanPro, "Arial Black", Arial, serif;
+	margin : -5px 20px 5px 20px;
+}
+
+#news h3
+{
+	font-size : x-small;
+	color : #FFFFFF; 
+	font-family : TrojanPro, "Arial Black", Arial, serif;
+	margin : 5px 20px 5px 60px;
+	font-weight : normal;
+}
+
+#news h4
+{
+	font-size : x-small;
+	color : #FFFFFF; 
+	font-family : TrojanPro, "Arial Black", Arial, serif;
+	margin : 5px 20px 5px 60px;
+	text-align: right;
+	font-weight : normal;	
+}
+
+#news ul
+{
+	margin : 15px 15px 30px 40px;
+    list-style: square inside;
+}
+
+#news li
+{
+    font-size : small;
+	color : #cdcdcd;
+	font-weight : normal;
+    margin: 10px 0 5px;
+}
+
+#stats
+{
+	width : 100%;
+	height : 188px;
+	display: inline-block;
+}
+
+#stats ul 
+{
+	margin : 5px 20px 5px 20px;
+	list-style-position: inside;
+}
+
+#stats li
+{
+    font-size : small;
+	color : #cdcdcd;
+	font-weight : normal;
+    margin: 10px 0 0;
+}
+
+#draft
+{
+	width : 100%;
+	height : 400px;
+	border-bottom : 2px #6d6d6b solid;
+}
+
+#nicknameH2
+{
+	font-size : medium;
+	color : #cdcdcd; 
+	margin : 20px 20px 0 20px;
+}
+
+#draft button 
+{
+	color : #cdcdcd;
+	font-size : small;
+	margin-top: 15px;
+	font-weight : normal;
+	text-align : center;
+	font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#draft .centered
+{
+    text-align : center;
+}
+
+#cmLabel, #cdLabel
+{
+    font-size : small;
+    margin-top : 15px;
+    margin-left : 5px;
+}
+
+#draft input
+{
+	border : 1px #6d6d6b solid;
+	background-color : #1d1d1b;
+	color : #cdcdcd;
+}
+
+#nickname
+{	
+	width : 225px;
+	margin : 10px 15px 0 15px;
+}
+
+#randomRoomH2, #privateRoomH2
+{
+	font-size : medium;
+	color : #cdcdcd; 
+	margin : 20px 20px 0 20px;
+}
+
+#privateId
+{
+    margin-top : 10px;
+    margin-bottom : -10px;
+}
+#joinPrivateButton
+{
+	margin-left: 5px;
+	margin-top: 200px;
+}
+
+#spectatePrivateButton
+{
+    margin-left: 5px;
+    margin-top: 200px;
+}
+
+#links
+{
+	width : 100%;
+	height : 298px;
+}
+
+#links ul
+{
+	margin : 20px 15px 40px 15px;
+    list-style: circle inside;
+}
+
+#links li
+{
+    font-size : small;
+	color : #cdcdcd;
+	font-weight : normal;
+    margin: 10px 0 5px;
+}
+
+#links .fb-like
+{
+    width : 50%;
+    margin : auto;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+#links a
+{
+	text-decoration: none;
+}
+
+#links a:hover
+{
+	text-decoration: underline;
+}
+
+/* Draft props */
+#chatHeader, #heroesHeader, #infoHeader
+{
+    height : 25px;
+    border-bottom : 1px #6d6d6b solid;
+    background-color : #1d1d1b;
+}
+
+#chatHeader h1, #heroesHeader h1, #infoHeader h1
+{
+    line-height : 25px;
+    font-size : x-small;
+    color : #cdcdcd;
+    text-align : center;
+    font-weight : normal;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#heroes
+{
+    width : 50%;
+    height : 100%;
+    display: inline-block;
+    vertical-align : top;
+    border-right : 1px #6d6d6b solid;
+}
+
+#heroesIcons
+{
+    width : 100%;
+    height : 674px;
+}
+
+#heroesRadiant, #heroesDire
+{
+    width : 235px;
+    height : 100%;
+    display : inline-block;
+}
+
+
+#radiantSTR, #radiantAGI, #radiantINT, #direSTR, #direAGI, #direINT
+{
+    width : 100%;
+    height : 33%;
+    display : inline-block;
+    vertical-align : top;
+    margin-left : 7px;
+}
+
+#radiantSTR, #direSTR
+{
+    margin-top : 10px;
+}
+
+#radiantAGI, #direAGI
+{
+    margin-top : 20px;
+}
+
+#radiantINT, #direINT
+{
+    margin-top : -10px;
+}
+
+#radiantSTRTitle, #radiantAGITitle, #radiantINTTitle, #direSTRTitle, #direAGITitle, #direINTTitle
+{
+    text-align: center;
+    padding-bottom: 6px;
+    font-weight : normal;
+    font-size: small;
+}
+
+#radiantSTRTitle,#direSTRTitle
+{
+    color: #650101;
+}
+
+#radiantAGITitle,#direAGITitle
+{
+    color: #275929;
+}
+
+#radiantINTTitle,#direINTTitle
+{
+    color: #2A4884;
+}
+
+.pictureArea
+{
+    width : 51px;
+    height : 29px;
+    display : inline-block;
+    margin-top : 0;
+    margin-left : -2px;
+    border-radius : 2px;
+    background-color : black;
+    border : 2px black solid;
+}
+
+.locked
+{
+    filter: alpha(opacity=40); /* msie */
+    opacity: 0.3;
+}
+
+#right
+{
+    width : 50%;
+    height : 100%;
+    display: inline-block;
+    margin-left : -6px;
+}
+
+#info
+{
+    width : 100%;
+    height : 490px;
+    display: inline-block;
+}
+
+#infoSides
+{
+    width : 100%;
+    height : 415px;
+}
+
+#infoRadiantName, #infoDireName
+{
+    width : 237px;
+    margin-left : -2px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#infoRadiantName h1, #infoDireName h1
+{
+    font-size : large;
+    color : #cdcdcd;
+    text-align : center;
+    font-weight : normal;
+    margin-top : 10px;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#infoRadiantName #radiantPlayer, #infoDireName #direPlayer
+{
+    font-size : x-small;
+    color : #cdcdcd;
+    text-align : right;
+    font-weight : normal;
+    margin-right : 25px;
+    margin-top : 5px;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#time
+{
+    font-size : xx-large;
+    color : #cdcdcd;
+    text-align : center;
+    font-weight : normal;
+    margin-top : 5px;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#infoRadiantTime, #infoDireTime
+{
+    width : 50%;
+    margin-left : -4px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#infoRadiantTime h1, #infoDireTime h1
+{
+    font-size : large;
+    color : #cdcdcd;
+    text-align : center;
+    font-weight : normal;
+    margin-top : 10px;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+
+#picks, #bans
+{
+    font-size : large;
+    color : #cdcdcd;
+    text-align : center;
+    font-weight : normal;
+    margin-top : 10px;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#infoRadiantBan
+{
+    width : 50%;
+    display : inline-block;
+    margin-top : 10px;
+    vertical-align : top;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+}
+
+#infoDireBan
+{
+    width : 49%;
+    display : inline-block;
+    margin-top : 10px;
+    vertical-align : top;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+}
+
+#infoRadiantPick
+{
+    width : 50%;
+    display : inline-block;
+    margin-top : 10px;
+    vertical-align : top;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+    position : relative;
+}
+
+#laneLegend
+{
+    position : absolute;
+    top : 0;
+    left : 100%;
+    margin-left : -15px;
+    font-size : small;
+
+}
+
+#midLane, #topLane, #botLane, #woodLane, #roamLane
+{
+    padding : 1px 1px 1px 1px;
+    border-radius : 2px;
+    margin-bottom : 2px;
+    font-weight : bold;
+    color: black;
+}
+
+
+#midLane
+{
+    background-color : #DD0000;
+}
+
+#topLane
+{
+    background-color : #00DD00;
+}
+
+#botLane
+{
+    background-color : #0000DD;
+}
+
+#woodLane
+{
+    background-color : #DDDD00;
+}
+
+#roamLane
+{
+    background-color : #DDDDDD;
+}
+
+#infoDirePick
+{
+    width : 49%;
+    display : inline-block;
+    margin-top : 10px;
+    vertical-align : top;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+}
+
+
+.pictureAreaBanPick
+{
+    width : 53px;
+    height : 30px;
+    display : inline-block;
+    margin-left : -2px;
+    margin-top : 1px;
+    border-radius : 2px;
+    background-color : black;
+    border : 3px black solid;
+}
+
+#infoButtons
+{
+    text-align : center;
+    margin: 15px auto 10px;
+    vertical-align : bottom;
+
+}
+
+#info button
+{
+    color : #cdcdcd;
+    font-size : x-small;
+    font-weight : normal;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#chat
+{
+    width : 100%;
+    height : 199px;
+    display: inline-block;
+    margin-left:2px;
+    border-top : 1px #6d6d6b solid;
+}
+
+#chatScreen
+{
+    width : 454px;
+    height : 136px;
+    margin : 10px 0 5px 10px;
+    vertical-align : middle;
+    background-color : #1d1d1b;
+    overflow-y : auto;
+    hyphens : auto;
+    word-wrap : break-word;
+    border : 1px #6d6d6b solid;
+}
+
+#chatEntryArea
+{
+    margin-left : 30px;
+    color : #cdcdcd;
+    font-size : x-small;
+    font-weight : normal;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#chatMessage
+{
+    margin-left : 5px;
+    width : 300px;
+    border : 1px #6d6d6b solid;
+    background-color : #1d1d1b;
+    color : #cdcdcd;
+}
+
+#spectatorCount
+{
+    padding-left : 15px;
+}
+
+#chatScreenContent
+{
+    color : #cdcdcd;
+    font-size : small;
+}
+
+#dingSound
+{
+    display: none;
+}
+
+/* Show props */
+
+#radiant
+{
+    width : 402px;
+    height : 370px;
+    display: inline-block;
+    vertical-align : top;
+}
+
+#mid
+{
+    width : 130px;
+    height : 370px;
+    display: inline-block;
+    vertical-align : top;
+}
+
+
+#dire
+{
+    width : 402px;
+    height : 370px;
+    display: inline-block;
+    vertical-align : top;
+}
+
+#radiantHeader, #direHeader
+{
+    width : 405px;
+    height : 100px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#radiantIcons, #direIcons
+{
+    width : 405px;
+    height : 40px;
+    display : inline-block;
+    vertical-align : top;
+    text-align : center;
+}
+
+.icons
+{
+    width : 50px;
+    height : 50px;
+    display: none;
+}
+
+#bansShow, #picksShow, #position
+{
+    width : 100%;
+    height : 40px;
+    font-size : x-large;
+    line-height: 40px;
+    text-align: center;
+}
+
+#infoRadiantBanShow, #infoDireBanShow, #infoRadiantPickShow, #infoDirePickShow
+{
+    width : 470px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+}
+
+.pictureAreaBanPickShow
+{
+    width : 75px;
+    height : 42px;
+    border-radius : 2px;
+    background-color : black;
+    border : 3px black solid;
+}
+
+#radiantHeaderShow, #direHeaderShow
+{
+    width : 405px;
+    height : 100px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#radiantHeaderShow, #direHeaderShow, #bansShow, #picksShow, #position, #mid h1
+{
+    font-family : TrojanPro, Verdana, "Arial Black", Arial, serif;
+}
+
+#versusHeader
+{
+    width : 130px;
+    height : 100px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#versusIcons
+{
+    width : 130px;
+    height : 40px;
+    display : inline-block;
+    vertical-align : top;
+}
+
+#radiantHeaderShow h1, #direHeaderShow h1, #versusHeader h1
+{
+    text-align : center;
+    line-height : 100px;
+    font-size: xx-large;
+    font-weight : normal;
+}
+
+#versusHeader h1
+{
+    margin-top : 10px;
+}
+
+#radiantHeaderShow h1
+{
+    color : #00BB00;
+}
+
+#direHeaderShow h1
+{
+    color : #BB0000;
+}
+
+#vsMid h1, #vsTop h1, #vsBot h1, #vsWoods h1, #vsRoam h1
+{
+    text-align : center;
+    line-height : 105px;
+    font-style : italic;
+}
+
+#radiantMid, #radiantTop, #radiantBot, #radiantWoods, #radiantRoam, #vsMid, #vsTop, #vsBot, #vsWoods, #vsRoam, #direMid, #direTop, #direBot, #direWoods, #direRoam
+{
+    width : 100%;
+    height : 70px;
+    line-height : 70px;
+}
+
+#radiantMid, #radiantTop, #radiantBot, #radiantWoods, #radiantRoam
+{
+    text-align : right;
+    line-height : 105px;
+}
+
+#direMid, #direTop, #direBot, #direWoods, #direRoam
+{
+    text-align : left;
+    line-height : 105px;
+}
+
+.pick
+{
+    width : 75px;
+    height : 42px;
+    display: inline;
+    border-radius : 2px;
+    background-color : black;
+    border : 3px black solid;
+    margin-top: 26px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* About props */
+
+#about
+{
+    width : 100%;
+    display: inline-block;
+}
+
+#about h2
+{
+    font-size : x-large;
+    color : #FFFFFF;
+    margin: 20px 0 5px 0;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#about ul
+{
+    margin : 15px 15px 30px 40px;
+    list-style: square inside;
+}
+
+#about li
+{
+    font-size : small;
+    color : #cdcdcd;
+    font-weight : normal;
+    margin: 10px 0 5px;
+}
+
+#about header h1
+{
+    line-height: 40px;
+    font-size : medium;
+    font-weight : normal;
+    color : #cdcdcd;
+    text-align : center;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    border-bottom : 2px #6d6d6b solid;
+    background-color: #1d1d1b;
+}
+
+#aboutContent
+{
+    margin : 5px 5px 5px 5px;
+    font-size : small;
+    font-family : "Times New Roman", Trebuchet, Arial, serif;
+}
+
+#aboutContent p
+{
+    margin : 5px 5px 5px 5px;
+}
+
+#aboutContent p:first-letter
+{
+    padding-left: 20px;
+}
+
+#about h3
+{
+    font-size : small;
+    color : #FFFFFF;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    margin : 15px 0 0 10px;
+    font-weight : normal;
+}
+
+#aboutContent a
+{
+    text-align: center;
+}
+
+.imageCenter
+{
+    display: block;
+    margin: 0 auto;
+}
+
+#about h4
+{
+    font-size : x-small;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    margin : 5px 20px 5px 60px;
+    text-align: right;
+    font-weight : normal;
+    color : white;
+}
+
+#about h4 a:visited
+{
+    color : #FFFFFF;
+
+}
+
+/* Rooms props */
+
+#roomsHeader h1
+{
+    line-height: 40px;
+    font-size : medium;
+    font-weight : normal;
+    color : #cdcdcd;
+    text-align : center;
+    vertical-align : middle;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+    border-bottom : 2px #6d6d6b solid;
+    background-color: #1d1d1b;
+}
+
+#tableTitle {
+    padding-bottom : 30px;
+}
+
+table {
+    font-size : small;
+    color : #cdcdcd;
+    font-weight : normal;
+    font-family : Arial, serif;
+    border : 5px;
+}
+
+td
+{
+    padding:7px;
+}
+
+th {
+    font-size : large;
+    padding : 10px;
+}
+
+table, th, td
+{
+    border: 1px solid white;
+}
+
+table
+{
+    border-collapse : collapse;
+}
+
+#roomsContent button
+{
+    color : #cdcdcd;
+    font-size : small;
+    margin-top: 15px;
+    font-weight : normal;
+    text-align : center;
+    font-family : TrojanPro, "Arial Black", Arial, serif;
+}
+
+#roomsContent
+{
+    padding : 25px 25px 25px 25px;
+}
+
+#roomTable
+{
+    width : 100%;
+}
+
+#roomTable td:nth-of-type(3), #roomTable td:nth-of-type(4), #roomTable td:nth-of-type(5) {
+    text-align: center;
+}

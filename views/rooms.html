@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+{{>head}}
+
+<body>
+
+<script type="application/javascript" src="/files/js/views/rooms.js"></script>
+
+{{>mainHeader}}
+
+<div id="bodyFirstBorder">
+    <div id="bodySecondBorder">
+        <div id="body">
+            <header id="roomsHeader"><h1>Public Drafts</h1></header>
+
+            <section id="roomsContent">
+
+                <TABLE id="roomTable">
+                    <CAPTION id="tableTitle">
+                        <button id="refreshButton">Refresh</button>
+                        <span id="refreshSummary">Press refresh to list drafts</span></CAPTION>
+                    <col width="relative_length">
+                    <col width="relative_length">
+                    <col width="200px">
+                    <col width="50px">
+                    <col width="100px">
+                    <col width="70px">
+                    <TR>
+                        <TH>Drafter 1</TH>
+                        <TH>Drafter 2</TH>
+                        <TH>Status</TH>
+                        <TH>Mode</TH>
+                        <TH>Spectators</TH>
+                        <TH>Watch</TH>
+                    </TR>
+                </TABLE>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+{{>mainFooter}}
+
+</body>
+</html>

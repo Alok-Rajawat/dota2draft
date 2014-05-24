@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+{{>head}}
+
+<body>
+
+		{{>mainHeader}}
+		
+		<div id="bodyFirstBorder">
+		<div id="bodySecondBorder">
+		<div id="body">
+		
+			<section id="about">
+				<header><h1>About dota2draft</h1></header>
+				<section id="aboutContent">
+					<h2>Summary</h2>
+					<p>Dota2draft is a drafting simulator for the captain mode of dota 2.
+					It was designed to help people practice the art of drafting against friends or random people.</p>
+					
+					<h2>Main page</h2>
+					<p>The main page is used to start private or random drafting.</p>
+					<a href="/files/image/about_main.jpg"><img class="imageCenter" src="/files/image/about_main.jpg" align="middle" height="373" width="500"/></a>
+					<ul>
+						<li>1 - List of recent updates.</li>
+						<li>2 - Link to this page.</li>
+						<li>3 - Name field. This is totally optional. If you don't specify it, you will be known as "You" in the game, and if the other player doesn't specify it, you will see "Opponent".</li>
+						<li>4 - Start drafting against a stranger (random matching with first available).</li>
+						<li>5 - Build your own private room with create and send your room id to a friend. Fill the field with the id and hit Join to start the fun.</li>
+						<li>6 - Some server statistics.</li>
+					</ul>
+					
+					<h2>Draft</h2>
+					<p>This page is where the draft takes place. You will have to wait a moment to find an opponent. A sound plays when someone joins.</p>
+					<a href="/files/image/about_draft.jpg"><img class="imageCenter" src="/files/image/about_draft.jpg" align="middle" height="373" width="500"/></a>
+					<ul>
+						<li>1 - Hero layout. Click on a picture to select a hero. If the image is grey, the hero is locked because not available in selected version, or already picked/banned.</li>
+						<li>2 - Team information, who is playing what.</li>
+						<li>3 - Time information.</li>
+						<li>4 - Ban section. Currently 2/3.</li>
+						<li>5 - Pick section. Currently 3/2.</li>
+						<li>6 - Area for action buttons.</li>
+						<li>7 - Chat to talk with your opponent.</li>
+					</ul>
+					
+					<p>Once the drafting phase is over, you have to deal with the laning phase. Hit the heroes icon in the pick area to change the lane of a hero and validate when over.
+					Once both players validate, laning is revealed to discuss. A link to generate the draft result is displayed in the chat.</p>
+					<a href="/files/image/about_draft2.jpg"><img class="imageCenter" src="/files/image/about_draft2.jpg" align="middle" height="373" width="500"/></a>
+					<ul>
+						<li>1 - Draft laning.</li>
+						<li>2 - Link to result page.</li>
+					</ul>
+					
+					<h2>Result Page</h2>
+					<p>The result link generates the draft with the laning choosen.</p>
+					<a href="/files/image/about_show.jpg"><img class="imageCenter" src="/files/image/about_show.jpg" align="middle" height="373" width="500"/></a>
+					<ul>
+						<li>1 - Team part. The icon shows which side picked first.</li>
+						<li>2 - Bans, from left to right.</li>
+						<li>3 - Picks, from left to right.</li>
+						<li>4 - Laning done by each team.</li>
+					</ul>
+					
+					<h2>Q/A</h2>
+					<h3>What is the hero pool available in dota2draft ?</h3>
+					<p>The available heroes are those of the "current" tournament version of Dota 2 if you select the Tournament version, or all the heroes if you choose the Latest version.
+                    I try to refresh the list every patch.</p>
+					
+					<h3>Do I need prerequisites to run dota2draft ?</h3>
+					<p>The web site is written in HTML/CSS/Javascript only, but sometimes with features of the recent HTML5 technology.
+					You have to make sure your web browser is able to display all the properties without messing up the design.
+					Moreover, the interactions are done with the javascript socket.io library and you may have to configure your firewall to be able to connect.</p>
+					
+					<h4><a href="/">Back</a></h4>
+
+
+				</section>
+			</section>
+			
+		
+		</div>
+		</div>
+		</div>
+		
+    {{>mainFooter}}
+		
+	</body>
+</html>
