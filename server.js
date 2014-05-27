@@ -43,7 +43,7 @@ app.get('/:name(index|)', function (req, res, next) {
         partials: hoganPartials(),
         title : 'Dota 2 Draft',
         server_state_date : stats.startingdate.toGMTString(),
-        server_status : stats.keeprunning ? 'Drafts opened' : 'Drafts closed, server will restart soon.',
+        server_status : 'Drafts opened',
         drafts_started_count : stats.startedRooms,
         drafts_running_count : stats.runningRooms,
         redrafts_count : stats.redraftRooms,
@@ -88,34 +88,14 @@ app.get('/spectate', function (req, res) {
     });
 });
 
-app.get('/admin/:id', function(req, res) {
-    var id = req.params.id;
-    if (id == 'whatthehellistheadminpw?') {
-
-        stats.keeprunning = false;
-	    
-		var html = '<!DOCTYPE html><html><head><title>Dota2Draft - Admin</title></head><body>';
-		html += 'Server is now in restart mode. <br />';
-		html += '</body></html>';
-		
-		res.send(html, 200);
-    } else {
-		var html = '<!DOCTYPE html><html><head><title>Dota2Draft - Admin</title></head><body>';
-		html += 'WRONG ID !<br />';
-		html += '</body></html>';
-		
-		res.send(html, 200);
-    }
-});
-
 app.get('/rooms/get', function(req, res) {
-	var ret = {};
-	for (var roomId in rooms) {
-		var room = rooms[roomId];
-		
-		ret[roomId] = room.clone();
-	}
-	res.send(ret,200);
+    var ret = {};
+    for (var roomId in rooms) {
+	    var room = rooms[roomId];
+	    
+	    ret[roomId] = room.clone();
+    }
+    res.send(ret,200);
 });
 
 app.get('/rooms/get/:id', function(req, res) {
@@ -136,7 +116,6 @@ app.get('*', function(req, res){
 
 // Stats tracing
 var stats = {};
-stats.keeprunning = true;
 stats.startingdate = new Date();
 stats.roomEnd = 0;
 stats.startedRooms = 0;
@@ -160,7 +139,6 @@ function decreaseFunction(room) {
     var dateNow = new Date();
     if (room == null) return;
     if (room.pickingSide != null) {
-
         // DEC TIME
         if(room.globalTime != 0)
             room.globalTime--;
@@ -210,77 +188,72 @@ function decreaseFunction(room) {
 //////////////////////
 io.sockets.on('connection', function (socket) {
 	
-	socket.emit('connection_success');
+    socket.emit('connection_success');
 
-	socket.on('join', function(data) {
-        var socketData = {};
-        socketData.type = "player";
-        socketData.uuid = uuid.v1();
-			
-		if (typeof(data) == 'undefined') {
-            socket.disconnect();
-			return;
-        }
-		
-		if (!stats.keeprunning) {
-			socket.emit('join_fail', { error : 'restart'});
-			return;
-		}
-		
-		if (data.roomType == 'pv') {
-			if (data.roomId == null) {
-				var newRoom = buildRoom(id, socket, null, data.nick, null, data.mode);
-                newRoom.isPv = true;
-				privateRooms[id] = newRoom;
-				socket.emit('join_success', { roomId : id });
-                socketData.roomId = id;
-				id++;
-                if (id > 9999) id = 0;
-			} else {
-				var privRoom = privateRooms[data.roomId];
-				if (typeof(privRoom) == 'undefined') {
-					socket.emit('join_fail', { error : 'noroom' });
-					return;
-				} else {
-					privRoom.player2 = socket;
-					privRoom.player2nickname = data.nick;
-                    privRoom.lastActivity = new Date();
-					socket.emit('join_success');
-					privRoom.player1.emit('player_join', {nick : data.nick});
-					socket.emit('player_join', {nick : privRoom.player1nickname});
-					rooms[privRoom.id] = privRoom;
-                    rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
-                    socketData.roomId = privRoom.id;
-					delete privateRooms[privRoom.id];
-                    stats.runningRooms++;
-				}
-			}
-		} else {
-			if (freeRoom[data.mode] == null) {
-				freeRoom[data.mode] = buildRoom(id, socket, null, data.nick, null, data.mode);
-                freeRoom[data.mode].isPv = false;
-				id++;
-                if (id > 9999) id = 0;
-				socket.emit('join_success');
-                socketData.roomId = freeRoom[data.mode].id;
-			} else if (freeRoom[data.mode].player2 == null) {
-				freeRoom[data.mode].player2 = socket;
-				freeRoom[data.mode].player2nickname = data.nick;
-                freeRoom[data.mode].lastActivity = new Date();
-				socket.emit('join_success');
-				freeRoom[data.mode].player1.emit('player_join', {nick : data.nick});
-				socket.emit('player_join', {nick : freeRoom[data.mode].player1nickname} );
-				rooms[freeRoom[data.mode].id] = freeRoom[data.mode];
-                rooms[freeRoom[data.mode].id].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
-                socketData.roomId = freeRoom[data.mode].id;
-				freeRoom[data.mode] = null;
-                stats.runningRooms++;
-			}
-			
-		}
+    socket.on('join', function(data) {
+    var socketData = {};
+    socketData.type = "player";
+    socketData.uuid = uuid.v1();
+		    
+    if (typeof(data) == 'undefined') {
+	socket.disconnect();
+		    return;
+    }
+	    
+	    if (data.roomType == 'pv') {
+		    if (data.roomId == null) {
+			    var newRoom = buildRoom(id, socket, null, data.nick, null, data.mode);
+	    newRoom.isPv = true;
+			    privateRooms[id] = newRoom;
+			    socket.emit('join_success', { roomId : id });
+	    socketData.roomId = id;
+			    id++;
+	    if (id > 9999) id = 0;
+		    } else {
+			    var privRoom = privateRooms[data.roomId];
+			    if (typeof(privRoom) == 'undefined') {
+				    socket.emit('join_fail', { error : 'noroom' });
+				    return;
+			    } else {
+				    privRoom.player2 = socket;
+				    privRoom.player2nickname = data.nick;
+		privRoom.lastActivity = new Date();
+				    socket.emit('join_success');
+				    privRoom.player1.emit('player_join', {nick : data.nick});
+				    socket.emit('player_join', {nick : privRoom.player1nickname});
+				    rooms[privRoom.id] = privRoom;
+		rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
+		socketData.roomId = privRoom.id;
+				    delete privateRooms[privRoom.id];
+		stats.runningRooms++;
+			    }
+		    }
+	    } else {
+		    if (freeRoom[data.mode] == null) {
+			    freeRoom[data.mode] = buildRoom(id, socket, null, data.nick, null, data.mode);
+	    freeRoom[data.mode].isPv = false;
+			    id++;
+	    if (id > 9999) id = 0;
+			    socket.emit('join_success');
+	    socketData.roomId = freeRoom[data.mode].id;
+		    } else if (freeRoom[data.mode].player2 == null) {
+			    freeRoom[data.mode].player2 = socket;
+			    freeRoom[data.mode].player2nickname = data.nick;
+	    freeRoom[data.mode].lastActivity = new Date();
+			    socket.emit('join_success');
+			    freeRoom[data.mode].player1.emit('player_join', {nick : data.nick});
+			    socket.emit('player_join', {nick : freeRoom[data.mode].player1nickname} );
+			    rooms[freeRoom[data.mode].id] = freeRoom[data.mode];
+	    rooms[freeRoom[data.mode].id].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
+	    socketData.roomId = freeRoom[data.mode].id;
+			    freeRoom[data.mode] = null;
+	    stats.runningRooms++;
+		    }
+		    
+	    }
 
-        socket.set('socketData', socketData, function () {});
-	});
+    socket.set('socketData', socketData, function () {});
+    });
 
 
     socket.on('spectate', function(data) {
