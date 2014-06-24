@@ -253,7 +253,7 @@ io.sockets.on('connection', function (socket) {
 			
 		}
 
-        socket.set('socketData', socketData, function () {});
+        socket.socketData = socketData;
 	});
 
 
@@ -290,7 +290,7 @@ io.sockets.on('connection', function (socket) {
         room.spectators[socketData.uuid] = socket;
         SendSpectatorCount(room);
 
-        socket.set('socketData', socketData, function () {});
+        socket.socketData = socketData;
     });
 
     function SendSpectatorCount(room) {
@@ -307,57 +307,56 @@ io.sockets.on('connection', function (socket) {
     }
 	
 	socket.on('redraft', function() {
-		socket.get('socketData', function(err, sockedData) {
-            if (sockedData == null)
-                return;
+        var socketData = socket.socketData;
+        if (sockedData == null)
+            return;
 
-			var room = rooms[sockedData.roomId];
-			if (room == null)
-				return;
+        var room = rooms[sockedData.roomId];
+        if (room == null)
+            return;
 
-            room.lastActivity = new Date();
+        room.lastActivity = new Date();
 
-			var redraft = false;
-            var redraftPlayer = "";
-			if (room.player1 == socket && room.player1redraft == false) {
-				room.player1redraft = true;
-				room.player1.emit('redraft', { player : 'you'});
-				room.player2.emit('redraft', { player : 'opponent'});
-                redraftPlayer = "player1";
-				start = room.player2redraft;
-			} else if (room.player2 == socket && room.player2redraft == false) {
-				room.player2redraft = true;
-				room.player1.emit('redraft', { player : 'opponent'}); 
-				room.player2.emit('redraft', { player : 'you'});
-                redraftPlayer = "player2";
-				start = room.player1redraft;
-			}
+        var redraft = false;
+        var redraftPlayer = "";
+        if (room.player1 == socket && room.player1redraft == false) {
+            room.player1redraft = true;
+            room.player1.emit('redraft', { player : 'you'});
+            room.player2.emit('redraft', { player : 'opponent'});
+            redraftPlayer = "player1";
+            start = room.player2redraft;
+        } else if (room.player2 == socket && room.player2redraft == false) {
+            room.player2redraft = true;
+            room.player1.emit('redraft', { player : 'opponent'});
+            room.player2.emit('redraft', { player : 'you'});
+            redraftPlayer = "player2";
+            start = room.player1redraft;
+        }
+
+        for (var spectatorUUID in room.spectators) {
+            if (spectatorUUID == 'clone') continue;
+            room.spectators[spectatorUUID].emit('redraft', { player : redraftPlayer });
+        }
+
+        if (start) {
+            var newRoom = buildRoom(room.id, room.player1, room.player2, room.player1nickname, room.player2nickname, room.mode);
+            newRoom.isPv = room.isPv;
+            newRoom.spectators = room.spectators;
+            newRoom.spectatorsCount = room.spectatorsCount;
+            clearInterval(room.decreaseTimer);
+            delete rooms[sockedData.roomId];
+            newRoom.decreaseTimer = getIntervalFunction(newRoom.id, 1000);
+            rooms[newRoom.id] = newRoom;
+            newRoom.player1.emit('redraft_start');
+            newRoom.player2.emit('redraft_start');
 
             for (var spectatorUUID in room.spectators) {
                 if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('redraft', { player : redraftPlayer });
+                room.spectators[spectatorUUID].emit('redraft_start', {} );
             }
 
-			if (start) {
-				var newRoom = buildRoom(room.id, room.player1, room.player2, room.player1nickname, room.player2nickname, room.mode);
-                newRoom.isPv = room.isPv;
-                newRoom.spectators = room.spectators;
-                newRoom.spectatorsCount = room.spectatorsCount;
-                clearInterval(room.decreaseTimer);
-				delete rooms[sockedData.roomId];
-                newRoom.decreaseTimer = getIntervalFunction(newRoom.id, 1000);
-				rooms[newRoom.id] = newRoom;
-				newRoom.player1.emit('redraft_start');
-				newRoom.player2.emit('redraft_start');
-
-                for (var spectatorUUID in room.spectators) {
-                    if (spectatorUUID == 'clone') continue;
-                    room.spectators[spectatorUUID].emit('redraft_start', {} );
-                }
-
-                stats.redraftRooms++;
-			}
-		});
+            stats.redraftRooms++;
+        }
 	});
 	
 	// GAME
@@ -384,46 +383,45 @@ io.sockets.on('connection', function (socket) {
     }
 
 	socket.on('player_ready', function() {
-		socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-			var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-			room.lastActivity = new Date();
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
 
-            var start = false;
-            var playerReady = "";
-			if (room.player1 == socket && room.player1ready == false) {
-				room.player1ready = true;
-                playerReady = "player1";
-				room.player1.emit('player_ready', { player : 'you'});
-				room.player2.emit('player_ready', { player : 'opponent'}); 
-				start = room.player2ready;
-			} else if (room.player2 == socket && room.player2ready == false) {
-				room.player2ready = true;
-                playerReady = "player2";
-				room.player1.emit('player_ready', { player : 'opponent'}); 
-				room.player2.emit('player_ready', { player : 'you'});
-				start = room.player1ready;
-			}
+        var start = false;
+        var playerReady = "";
+        if (room.player1 == socket && room.player1ready == false) {
+            room.player1ready = true;
+            playerReady = "player1";
+            room.player1.emit('player_ready', { player : 'you'});
+            room.player2.emit('player_ready', { player : 'opponent'});
+            start = room.player2ready;
+        } else if (room.player2 == socket && room.player2ready == false) {
+            room.player2ready = true;
+            playerReady = "player2";
+            room.player1.emit('player_ready', { player : 'opponent'});
+            room.player2.emit('player_ready', { player : 'you'});
+            start = room.player1ready;
+        }
 
-            for (var spectatorUUID in room.spectators) {
-                if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('player_ready', { player : playerReady });
+        for (var spectatorUUID in room.spectators) {
+            if (spectatorUUID == 'clone') continue;
+            room.spectators[spectatorUUID].emit('player_ready', { player : playerReady });
+        }
+
+        if (start) {
+            stats.startedRooms++;
+            if (room.isPv) {
+                DecideVersion(room);
+            } else {
+                setupHeroPool(room, 'Tournament');
+                DecideSides(room);
             }
-
-			if (start) {
-                stats.startedRooms++;
-                if (room.isPv) {
-                    DecideVersion(room);
-                } else {
-                    setupHeroPool(room, 'Tournament');
-                    DecideSides(room);
-                }
-			}
-		});
+        }
 	});
 
     function DecideVersion(room) {
@@ -437,346 +435,338 @@ io.sockets.on('connection', function (socket) {
     }
 
     socket.on('version_choose', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-            var room = rooms[socketData.roomId];
-            if (room == null)
-                return;
-            room.lastActivity = new Date();
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
 
-            setupHeroPool(room, data.version);
-            DecideSides(room);
-        });
+        setupHeroPool(room, data.version);
+        DecideSides(room);
     });
 
 	
 	socket.on('side_choose', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-			var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-            room.lastActivity = new Date();
-				
-			var chooser = null;
-            var chooserId = "";
-			var nonChooser = null;
-            var nonChooserId = "";
-			
-			if (room.chooseSide == 1) {
-				chooser = room.player1;
-				nonChooser = room.player2;
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
+
+        var chooser = null;
+        var chooserId = "";
+        var nonChooser = null;
+        var nonChooserId = "";
+
+        if (room.chooseSide == 1) {
+            chooser = room.player1;
+            nonChooser = room.player2;
+            chooserId = "player1";
+            nonChooserId = "player2";
+        } else {
+            nonChooser = room.player1;
+            chooser = room.player2;
+            chooserId = "player2";
+            nonChooserId = "player1";
+        }
+
+        if (socket != chooser)
+            return;
+        if (room.chooseCount == 1 && data.side == 'Other')
+            return;
+        if (room.chooseSide == 1)
+            room.chooseSide = 2;
+        else
+            room.chooseSide = 1;
+        room.chooseCount = 1;
+
+        chooser.emit('side_choose_value', { side : data.side, player : 'you' });
+        nonChooser.emit('side_choose_value', { side : data.side, player : 'opponent' });
+
+        for (var spectatorUUID in room.spectators) {
+            if (spectatorUUID == 'clone') continue;
+            room.spectators[spectatorUUID].emit('side_choose_value', { player : chooserId, side : data.side, nonPlayer : nonChooserId});
+        }
+
+        if (data.side != 'Other') {
+            if (data.side == 'Radiant') {
+                room.radiant.socket = chooser;
+                room.radiant.player = chooserId;
+                room.dire.socket = nonChooser;
+                room.dire.player = nonChooserId;
+            } else {
+                room.radiant.socket = nonChooser;
+                room.radiant.player = nonChooserId;
+                room.dire.socket = chooser;
+                room.dire.player = chooserId;
+            }
+
+            if (room.chooseBegin == 1) {
+                chooser = room.player1;
                 chooserId = "player1";
+                nonChooser = room.player2;
                 nonChooserId = "player2";
-			} else {
-				nonChooser = room.player1;
-				chooser = room.player2;
+            } else {
+                chooser = room.player2;
                 chooserId = "player2";
+                nonChooser = room.player1;
                 nonChooserId = "player1";
-			}
-			
-			if (socket != chooser)
-				return;
-			if (room.chooseCount == 1 && data.side == 'Other')
-				return;
-			if (room.chooseSide == 1)
-				room.chooseSide = 2;
-			else
-				room.chooseSide = 1;
-			room.chooseCount = 1;
+            }
 
-			chooser.emit('side_choose_value', { side : data.side, player : 'you' });
-			nonChooser.emit('side_choose_value', { side : data.side, player : 'opponent' });
+            chooser.emit('begin_choose', { player : 'you' });
+            nonChooser.emit('begin_choose', { player : 'opponent' });
 
             for (var spectatorUUID in room.spectators) {
                 if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('side_choose_value', { player : chooserId, side : data.side, nonPlayer : nonChooserId});
+                room.spectators[spectatorUUID].emit('begin_choose', { player : chooserId});
             }
-			
-			if (data.side != 'Other') {
-				if (data.side == 'Radiant') {
-					room.radiant.socket = chooser;
-                    room.radiant.player = chooserId;
-					room.dire.socket = nonChooser;
-                    room.dire.player = nonChooserId;
-				} else {
-					room.radiant.socket = nonChooser;
-                    room.radiant.player = nonChooserId;
-					room.dire.socket = chooser;
-                    room.dire.player = chooserId;
-				}
-				
-				if (room.chooseBegin == 1) {
-					chooser = room.player1;
-                    chooserId = "player1";
-					nonChooser = room.player2;
-                    nonChooserId = "player2";
-				} else {
-					chooser = room.player2;
-                    chooserId = "player2";
-					nonChooser = room.player1;
-                    nonChooserId = "player1";
-				}
-				
-				chooser.emit('begin_choose', { player : 'you' });
-				nonChooser.emit('begin_choose', { player : 'opponent' });
-
-                for (var spectatorUUID in room.spectators) {
-                    if (spectatorUUID == 'clone') continue;
-                    room.spectators[spectatorUUID].emit('begin_choose', { player : chooserId});
-                }
-			}
-		});
+        }
 	});
 	
 	socket.on('begin_choose', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-            var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-            room.lastActivity = new Date();
-				
-			var chooser = null;
-            var chooserId = "";
-			var nonChooser = null;
-            var nonChooserId = "";
-			
-			if (room.chooseBegin == 1) {
-				chooser = room.player1;
-                chooserId = "player1";
-				nonChooser = room.player2;
-                nonChooserId = "player2";
-			} else {
-				nonChooser = room.player1;
-                nonChooserId = "player1";
-				chooser = room.player2;
-                chooserId = "player2";
-			}
-			
-			if (socket != chooser)
-				return;
-			if (room.chooseBeginCount == 1 && data.side == 'Other')
-				return;
-			if (room.chooseBegin == 1)
-				room.chooseBegin = 2;
-			else
-				room.chooseBegin = 1;
-			room.chooseBeginCount = 1;
-			
-			var beginSide = data.side;
-			if (data.side == 'Random') {
-				var randomI = Math.floor((Math.random()*2)+1);
-				if (randomI == 1)
-					beginSide = 'Radiant';
-				else
-					beginSide = 'Dire';
-			}
-			
-			chooser.emit('begin_choose_value', { side : data.side, player : 'you' , randomResult : beginSide});
-			nonChooser.emit('begin_choose_value', { side : data.side, player : 'opponent' , randomResult : beginSide});
-            room.firstPick = beginSide;
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
+
+        var chooser = null;
+        var chooserId = "";
+        var nonChooser = null;
+        var nonChooserId = "";
+
+        if (room.chooseBegin == 1) {
+            chooser = room.player1;
+            chooserId = "player1";
+            nonChooser = room.player2;
+            nonChooserId = "player2";
+        } else {
+            nonChooser = room.player1;
+            nonChooserId = "player1";
+            chooser = room.player2;
+            chooserId = "player2";
+        }
+
+        if (socket != chooser)
+            return;
+        if (room.chooseBeginCount == 1 && data.side == 'Other')
+            return;
+        if (room.chooseBegin == 1)
+            room.chooseBegin = 2;
+        else
+            room.chooseBegin = 1;
+        room.chooseBeginCount = 1;
+
+        var beginSide = data.side;
+        if (data.side == 'Random') {
+            var randomI = Math.floor((Math.random()*2)+1);
+            if (randomI == 1)
+                beginSide = 'Radiant';
+            else
+                beginSide = 'Dire';
+        }
+
+        chooser.emit('begin_choose_value', { side : data.side, player : 'you' , randomResult : beginSide});
+        nonChooser.emit('begin_choose_value', { side : data.side, player : 'opponent' , randomResult : beginSide});
+        room.firstPick = beginSide;
+
+        for (var spectatorUUID in room.spectators) {
+            if (spectatorUUID == 'clone') continue;
+            room.spectators[spectatorUUID].emit('begin_choose_value', { side : data.side, player : chooserId , randomResult : beginSide});
+        }
+
+        if (beginSide != 'Other') {
+            setupMode(room);
+            var payloadData = { mode : room.mode, heroes : room.heroes, radiantTime : room.radiant.time, direTime : room.dire.time, globalTime : room.globalTime};
+            chooser.emit('setup_mode', payloadData);
+            nonChooser.emit('setup_mode', payloadData);
 
             for (var spectatorUUID in room.spectators) {
                 if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('begin_choose_value', { side : data.side, player : chooserId , randomResult : beginSide});
+                room.spectators[spectatorUUID].emit('setup_mode', payloadData);
             }
-
-			if (beginSide != 'Other') {
-                setupMode(room);
-                var payloadData = { mode : room.mode, heroes : room.heroes, radiantTime : room.radiant.time, direTime : room.dire.time, globalTime : room.globalTime};
-                chooser.emit('setup_mode', payloadData);
-                nonChooser.emit('setup_mode', payloadData);
-
-                for (var spectatorUUID in room.spectators) {
-                    if (spectatorUUID == 'clone') continue;
-                    room.spectators[spectatorUUID].emit('setup_mode', payloadData);
-                }
-				room.pickingSide = beginSide;
-			}
-			
-		});
+            room.pickingSide = beginSide;
+        }
 	});
 	
 	socket.on('choose_hero', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-            var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-            room.lastActivity = new Date();
-				
-			if (data.action != room.action)
-				return;
-			
-			var side = null;
-			if (room.pickingSide == 'Radiant')
-				side = room.radiant;
-			else
-				side = room.dire;
-			if (side.socket != socket)
-				return;
-				
-			var seen = false;
-			for (i = 0; i < room.heroes.length; i++) {
-				if (room.heroes[i] == data.choice) {
-					seen = true;
-					break;
-				}
-			}
-			
-			if (!seen)
-				return;
-				
-			processHeroChoice(room, data.choice);
-		});
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
+
+        if (data.action != room.action)
+            return;
+
+        var side = null;
+        if (room.pickingSide == 'Radiant')
+            side = room.radiant;
+        else
+            side = room.dire;
+        if (side.socket != socket)
+            return;
+
+        var seen = false;
+        for (i = 0; i < room.heroes.length; i++) {
+            if (room.heroes[i] == data.choice) {
+                seen = true;
+                break;
+            }
+        }
+
+        if (!seen)
+            return;
+
+        processHeroChoice(room, data.choice);
 	});
 	
 	socket.on('lanes', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-            var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-            room.lastActivity = new Date();
-				
-			if (socket == room.player1) {
-				if (room.player1lanes == null) {
-					room.player1lanes = data;
-					room.player1.emit('lanes_status', { player : 'You'});
-					room.player2.emit('lanes_status', { player : 'Opponent'});
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
 
-                    for (var spectatorUUID in room.spectators) {
-                        if (spectatorUUID == 'clone') continue;
-                        room.spectators[spectatorUUID].emit('lanes_status', { lanes : data, player : "player1"});
-                    }
-				}
-			} else if (socket == room.player2) {
-				if (room.player2lanes == null) {
-					room.player2lanes = data;
-					room.player1.emit('lanes_status', { player : 'Opponent'});
-					room.player2.emit('lanes_status', { player : 'You'});
-
-                    for (var spectatorUUID in room.spectators) {
-                        if (spectatorUUID == 'clone') continue;
-                        room.spectators[spectatorUUID].emit('lanes_status', { lanes : data, player : "player2"});
-                    }
-				}
-			}
-			
-			if (room.player1lanes != null && room.player2lanes != null) {
-				room.player1.emit('lanes_result', room.player2lanes);
-				room.player2.emit('lanes_result', room.player1lanes);
+        if (socket == room.player1) {
+            if (room.player1lanes == null) {
+                room.player1lanes = data;
+                room.player1.emit('lanes_status', { player : 'You'});
+                room.player2.emit('lanes_status', { player : 'Opponent'});
 
                 for (var spectatorUUID in room.spectators) {
                     if (spectatorUUID == 'clone') continue;
-                    room.spectators[spectatorUUID].emit('lanes_result', {});
+                    room.spectators[spectatorUUID].emit('lanes_status', { lanes : data, player : "player1"});
                 }
-			}
-		});
+            }
+        } else if (socket == room.player2) {
+            if (room.player2lanes == null) {
+                room.player2lanes = data;
+                room.player1.emit('lanes_status', { player : 'Opponent'});
+                room.player2.emit('lanes_status', { player : 'You'});
+
+                for (var spectatorUUID in room.spectators) {
+                    if (spectatorUUID == 'clone') continue;
+                    room.spectators[spectatorUUID].emit('lanes_status', { lanes : data, player : "player2"});
+                }
+            }
+        }
+
+        if (room.player1lanes != null && room.player2lanes != null) {
+            room.player1.emit('lanes_result', room.player2lanes);
+            room.player2.emit('lanes_result', room.player1lanes);
+
+            for (var spectatorUUID in room.spectators) {
+                if (spectatorUUID == 'clone') continue;
+                room.spectators[spectatorUUID].emit('lanes_result', {});
+            }
+        }
 	});
 	
 	// CHAT
 	
 	socket.on('message', function(data) {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
-                return;
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
 
-            var room = rooms[socketData.roomId];
-			if (room == null)
-				return;
-            room.lastActivity = new Date();
+        var room = rooms[socketData.roomId];
+        if (room == null)
+            return;
+        room.lastActivity = new Date();
 
-            var player = "";
-			if (room.player1 == socket) {
-                player = "player1";
-				room.player2.emit('message', data);
-			} else {
-                player = "player2";
-				room.player1.emit('message', data);
-			}
+        var player = "";
+        if (room.player1 == socket) {
+            player = "player1";
+            room.player2.emit('message', data);
+        } else {
+            player = "player2";
+            room.player1.emit('message', data);
+        }
 
-            for (var spectatorUUID in room.spectators) {
-                if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('message', { player : player, message : data.message});
-            }
-		});
+        for (var spectatorUUID in room.spectators) {
+            if (spectatorUUID == 'clone') continue;
+            room.spectators[spectatorUUID].emit('message', { player : player, message : data.message});
+        }
 	});
 	
 	// END OF CONNECTION
 	
 	socket.on('disconnect', function () {
-        socket.get('socketData', function(err, socketData) {
-            if (socketData == null)
+        var socketData = socket.socketData;
+        if (socketData == null)
+            return;
+
+        if (socketData.type == "player") {
+            if(freeRoom['low'] != null && freeRoom['low'].player1 == socket) {
+                freeRoom['low'] = null;
                 return;
-
-            if (socketData.type == "player") {
-                if(freeRoom['low'] != null && freeRoom['low'].player1 == socket) {
-                    freeRoom['low'] = null;
-                    return;
-                } else if (freeRoom['middle'] != null && freeRoom['middle'].player1 == socket) {
-                    freeRoom['middle'] = null;
-                    return;
-                } else if (freeRoom['high'] != null && freeRoom['high'].player1 == socket) {
-                    freeRoom['high'] = null;
-                    return;
-                }
-
-                room = privateRooms[socketData.roomId];
-                if (room != null) {
-                    delete privateRooms[socketData.roomId];
-                    return;
-                }
-
-                var room = rooms[socketData.roomId];
-                if (room != null) {
-                    if (room.inactivityTimeout)
-                        return;
-
-                    var player = "";
-                    if (room.player1 == socket) {
-                        room.player2.emit('player_left', {});
-                        player = "player1";
-                    } else {
-                        player = "player2";
-                        room.player1.emit('player_left', {});
-                    }
-
-                    for (var spectatorUUID in room.spectators) {
-                        if (spectatorUUID == 'clone') continue;
-                        room.spectators[spectatorUUID].emit('player_left', {player : player});
-                        room.spectators[spectatorUUID].disconnect();
-                    }
-
-                    clearInterval(rooms[socketData.roomId].decreaseTimer);
-                    delete rooms[socketData.roomId];
-                    stats.runningRooms--;
-
-                    return;
-                }
+            } else if (freeRoom['middle'] != null && freeRoom['middle'].player1 == socket) {
+                freeRoom['middle'] = null;
+                return;
+            } else if (freeRoom['high'] != null && freeRoom['high'].player1 == socket) {
+                freeRoom['high'] = null;
+                return;
             }
 
-            if (socketData.type == "spectator") {
-                var room = rooms[socketData.roomId];
-                if (room != null) {
-                    room.spectatorsCount--;
-                    delete room.spectators[socketData.uuid];
-                }
-                SendSpectatorCount(room);
+            room = privateRooms[socketData.roomId];
+            if (room != null) {
+                delete privateRooms[socketData.roomId];
+                return;
             }
-		});
-	});
+
+            var room = rooms[socketData.roomId];
+            if (room != null) {
+                if (room.inactivityTimeout)
+                    return;
+
+                var player = "";
+                if (room.player1 == socket) {
+                    room.player2.emit('player_left', {});
+                    player = "player1";
+                } else {
+                    player = "player2";
+                    room.player1.emit('player_left', {});
+                }
+
+                for (var spectatorUUID in room.spectators) {
+                    if (spectatorUUID == 'clone') continue;
+                    room.spectators[spectatorUUID].emit('player_left', {player : player});
+                    room.spectators[spectatorUUID].disconnect();
+                }
+
+                clearInterval(rooms[socketData.roomId].decreaseTimer);
+                delete rooms[socketData.roomId];
+                stats.runningRooms--;
+
+                return;
+            }
+        }
+
+        if (socketData.type == "spectator") {
+            var room = rooms[socketData.roomId];
+            if (room != null) {
+                room.spectatorsCount--;
+                delete room.spectators[socketData.uuid];
+            }
+            SendSpectatorCount(room);
+        }
+    });
 });
 
 //////////////////////
