@@ -1,5 +1,5 @@
 install :
-	npm install node-uuid express consolidate socket.io hogan.js
+	npm install node-uuid@1.4.1 express@4.4.4 consolidate@0.9.1 socket.io@1.0.6 hogan.js@3.0.1
 dev :
 	node dota2draft.js
 prod :
