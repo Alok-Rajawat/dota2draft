@@ -4,7 +4,6 @@
 var express = require('express');
 var http = require('http');
 var uuid = require('node-uuid');
-var hogan = require('hogan.js');
 var consolidate = require('consolidate');
 
 //////////////////////
