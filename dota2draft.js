@@ -307,10 +307,10 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('redraft', function() {
         var socketData = socket.socketData;
-        if (sockedData == null)
+        if (socketData == null)
             return;
 
-        var room = rooms[sockedData.roomId];
+        var room = rooms[socketData.roomId];
         if (room == null)
             return;
 
@@ -343,7 +343,7 @@ io.sockets.on('connection', function (socket) {
             newRoom.spectators = room.spectators;
             newRoom.spectatorsCount = room.spectatorsCount;
             clearInterval(room.decreaseTimer);
-            delete rooms[sockedData.roomId];
+            delete rooms[socketData.roomId];
             newRoom.decreaseTimer = getIntervalFunction(newRoom.id, 1000);
             rooms[newRoom.id] = newRoom;
             newRoom.player1.emit('redraft_start');
