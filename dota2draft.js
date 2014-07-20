@@ -724,13 +724,13 @@ io.sockets.on('connection', function (socket) {
             }
 
             room = privateRooms[socketData.roomId];
-            if (room != null) {
+            if (!(room === undefined) && room != null) {
                 delete privateRooms[socketData.roomId];
                 return;
             }
 
             var room = rooms[socketData.roomId];
-            if (room != null) {
+            if (!(room === undefined) && room != null) {
                 if (room.inactivityTimeout)
                     return;
 
@@ -749,7 +749,7 @@ io.sockets.on('connection', function (socket) {
                     room.spectators[spectatorUUID].disconnect();
                 }
 
-                clearInterval(rooms[socketData.roomId].decreaseTimer);
+                clearInterval(room.decreaseTimer);
                 delete rooms[socketData.roomId];
                 stats.runningRooms--;
 
@@ -759,7 +759,7 @@ io.sockets.on('connection', function (socket) {
 
         if (socketData.type == "spectator") {
             var room = rooms[socketData.roomId];
-            if (room != null) {
+            if (!(room === undefined) && room != null) {
                 room.spectatorsCount--;
                 delete room.spectators[socketData.uuid];
             }
