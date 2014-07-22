@@ -1,10 +1,33 @@
 //////////////////////
 // Libraries
 //////////////////////
+var fs = require('fs');
 var express = require('express');
 var http = require('http');
 var uuid = require('node-uuid');
 var hbs = require('hbs');
+
+//////////////////////
+// Application settings
+//////////////////////
+var settings = {
+    environment : "dev"
+}
+
+// Load settings.cfg if exists
+var settingsFile = "settings.cfg";
+settings.environment = "dev";
+if (process.env.NODE_ENVIRONMENT === 'production') {
+    settings.environment = "prod";
+}
+
+if (fs.existsSync(settingsFile)) {
+    var fileContent = fs.readFileSync(settingsFile, 'utf8');
+    var newSettings = JSON.parse(fileContent);
+    for(setting in newSettings) {
+        settings[setting] = newSettings[setting];
+    }
+}
 
 //////////////////////
 // Server setup
@@ -14,7 +37,7 @@ app.set('view engine', 'html');
 app.engine('html', require('hbs').__express);
 app.set('views', __dirname + '/views');
 hbs.registerPartials(__dirname + '/views/partials');
-app.enable('view cache');
+if (settings.environment === 'prod') app.enable('view cache'); else app.disable('view cache');
 app.disable('view layout');
 
 var server = http.createServer(app);
@@ -28,6 +51,7 @@ app.use('/files', express.static(__dirname + '/files'));
 
 app.get('/:name(index|)', function (req, res, next) {
     res.render('index', {
+        settings : settings,
         title : 'Dota 2 Draft',
         server_state_date : stats.startingdate.toGMTString(),
         drafts_started_count : stats.startedRooms,
@@ -39,33 +63,40 @@ app.get('/:name(index|)', function (req, res, next) {
 
 app.get('/draft', function (req, res) {
     res.render('draft', {
+        settings : settings,
         title : 'Dota 2 Draft - Draft Room',
-        draft : true
+        draft : true,
+        spectate : false
     });
 });
 
 app.get('/show?*', function(req, res) {
     res.render('show', {
+        settings : settings,
         title : 'Dota 2 Draft - Draft Result'
     });
 });
 
 app.get('/about', function(req, res) {
     res.render('about', {
+        settings : settings,
         title : 'Dota 2 Draft - About'
     });
 });
 
 app.get('/rooms', function(req, res) {
     res.render('rooms', {
+        settings : settings,
         title : 'Dota 2 Draft - Rooms'
     });
 });
 
 app.get('/spectate', function (req, res) {
     res.render('draft', {
+        settings : settings,
         title : 'Dota 2 Draft - Spectate Room',
-        draft : false
+        draft : false,
+        spectate : true
     });
 });
 
@@ -90,14 +121,18 @@ app.get('/rooms/get/:id', function(req, res) {
 // Defaults
 app.get('/404', function(req, res){
     res.render('error', {
+        settings : settings,
         title : 'Dota 2 Draft - 404',
-        error_404 : true
+        error_404 : true,
+        error_500 : false
     });
 });
 
 app.get('/500', function(req, res){
     res.render('error', {
+        settings : settings,
         title : 'Dota 2 Draft - 500',
+        error_404 : false,
         error_500 : true
     });
 });
