@@ -87,9 +87,30 @@ app.get('/rooms/get/:id', function(req, res) {
     res.send(ret,200);
 });
 
-app.get('*', function(req, res){
-  res.send('404 NOT FOUND. What the fuck maiden is not here !', 404);
+// Defaults
+app.get('/404', function(req, res){
+    res.render('error', {
+        title : 'Dota 2 Draft - 404',
+        error_404 : true
+    });
 });
+
+app.get('/500', function(req, res){
+    res.render('error', {
+        title : 'Dota 2 Draft - 500',
+        error_500 : true
+    });
+});
+
+app.use(function(err, req, res, next) {
+    console.log(new Date().toISOString() + "# " + err);
+    res.redirect('/500');
+});
+
+app.get('*', function(req, res){
+    res.redirect('/404');
+});
+
 
 //////////////////////
 // Global variables

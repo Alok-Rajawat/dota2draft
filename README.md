@@ -19,4 +19,4 @@ The web server is a node.js server using express. It communicates with clients u
 * `make clean` is removing all node packages.
 
 ## License
-Copyright 2014 Vincent 'Philaeux' Lamotte
+Copyright 2013-2014 Vincent 'Philaeux' Lamotte

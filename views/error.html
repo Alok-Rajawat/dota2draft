@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+{{>head}}
+
+<body>
+
+{{>mainHeader}}
+
+<div id="bodyFirstBorder">
+    <div id="bodySecondBorder">
+        <div id="body">
+
+            <section id="about">
+                {{#error_404}}<header><h1>404 Not Found</h1></header>{{/error_404}}
+                {{#error_500}}<header><h1>500 Internal Server Error</h1></header>{{/error_500}}
+                <br />
+                <br />
+                <section id="aboutContent">
+
+                    {{#error_404}}
+                    <p>The resource requested could not be found on this server.<br /></p>
+                    <ul>
+                        <li>Check that the URL you entered is consistent with what you wanted to write.</li>
+                        <li>The resource has been <code>moved</code>, <code>updated</code> or <code>deleted</code> before you could reach it. Try to find it again.</li>
+                    </ul>
+                    <p>Please contact the webmaster if the problem persists.</p>
+                    {{/error_404}}
+
+                    {{#error_500}}
+                    <p>The server encountered an internal error or misconfiguration and was unable to complete your request.<br /></p>
+                    <ul>
+                        <li>The action you requested cannot be applied because the affected resource has been <code>moved</code>, <code>updated</code> or <code>deleted</code>.</li>
+                        <li>The <code>server</code> or the <code>database</code> may be under heavy load and is not able to deliver your request.</li>
+                        <li>One of the service you are using is down (<code>Facebook</code>, <code>Steam</code>, <code>Google</code>, <code>Twitter</code>...).</li>
+                        <li>There is an error in the server code. It should not happen, that's why it happened.</li>
+                    </ul>
+                    <p>Please contact the webmaster if the problem persists.</p>
+                    {{/error_500}}
+
+                    <br />
+                    <br />
+                    <h4><a href="/">Back</a></h4>
+
+
+                </section>
+            </section>
+
+
+        </div>
+    </div>
+</div>
+
+{{>mainFooter}}
+
+</body>
+</html>
