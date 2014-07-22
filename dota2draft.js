@@ -4,45 +4,32 @@
 var express = require('express');
 var http = require('http');
 var uuid = require('node-uuid');
-var consolidate = require('consolidate');
+var hbs = require('hbs');
 
 //////////////////////
 // Server setup
 //////////////////////
 var app = express();
-app.engine('html', consolidate.hogan);
 app.set('view engine', 'html');
+app.engine('html', require('hbs').__express);
 app.set('views', __dirname + '/views');
+hbs.registerPartials(__dirname + '/views/partials');
 app.enable('view cache');
 app.disable('view layout');
 
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-io.set('log level', 1); // reduce logging
-
 server.listen(9000);
 
 //////////////////////
 // Routing
 //////////////////////
-
-// Partials used in many rendering views
-function hoganPartials() {
-    return {
-        head : 'common/head',
-        mainHeader : 'common/mainHeader',
-        mainFooter : 'common/mainFooter'
-    };
-};
-
 app.use('/files', express.static(__dirname + '/files'));
 
 app.get('/:name(index|)', function (req, res, next) {
     res.render('index', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft',
         server_state_date : stats.startingdate.toGMTString(),
-        server_status : 'Drafts opened',
         drafts_started_count : stats.startedRooms,
         drafts_running_count : stats.runningRooms,
         redrafts_count : stats.redraftRooms,
@@ -52,7 +39,6 @@ app.get('/:name(index|)', function (req, res, next) {
 
 app.get('/draft', function (req, res) {
     res.render('draft', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft - Draft Room',
         draft : true
     });
@@ -60,28 +46,24 @@ app.get('/draft', function (req, res) {
 
 app.get('/show?*', function(req, res) {
     res.render('show', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft - Draft Result'
     });
 });
 
 app.get('/about', function(req, res) {
     res.render('about', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft - About'
     });
 });
 
 app.get('/rooms', function(req, res) {
     res.render('rooms', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft - Rooms'
     });
 });
 
 app.get('/spectate', function (req, res) {
     res.render('draft', {
-        partials: hoganPartials(),
         title : 'Dota 2 Draft - Spectate Room',
         draft : false
     });
