@@ -51,9 +51,8 @@ app.use('/files', express.static(__dirname + '/files'));
 
 app.get('/:name(index|)', function (req, res, next) {
     res.render('index', {
-        settings : settings,
         title : 'Dota 2 Draft',
-        server_state_date : stats.startingdate.toGMTString(),
+        server_state_date : draftServer.getSessionDate().toGMTString(),
         drafts_started_count : stats.startedRooms,
         drafts_running_count : stats.runningRooms,
         redrafts_count : stats.redraftRooms,
@@ -63,7 +62,6 @@ app.get('/:name(index|)', function (req, res, next) {
 
 app.get('/draft', function (req, res) {
     res.render('draft', {
-        settings : settings,
         title : 'Dota 2 Draft - Draft Room',
         draft : true,
         spectate : false
@@ -72,28 +70,24 @@ app.get('/draft', function (req, res) {
 
 app.get('/show?*', function(req, res) {
     res.render('show', {
-        settings : settings,
         title : 'Dota 2 Draft - Draft Result'
     });
 });
 
 app.get('/about', function(req, res) {
     res.render('about', {
-        settings : settings,
         title : 'Dota 2 Draft - About'
     });
 });
 
 app.get('/rooms', function(req, res) {
     res.render('rooms', {
-        settings : settings,
         title : 'Dota 2 Draft - Rooms'
     });
 });
 
 app.get('/spectate', function (req, res) {
     res.render('draft', {
-        settings : settings,
         title : 'Dota 2 Draft - Spectate Room',
         draft : false,
         spectate : true
@@ -121,7 +115,6 @@ app.get('/rooms/get/:id', function(req, res) {
 // Defaults
 app.get('/404', function(req, res){
     res.render('error', {
-        settings : settings,
         title : 'Dota 2 Draft - 404',
         error_404 : true,
         error_500 : false
@@ -130,7 +123,6 @@ app.get('/404', function(req, res){
 
 app.get('/500', function(req, res){
     res.render('error', {
-        settings : settings,
         title : 'Dota 2 Draft - 500',
         error_404 : false,
         error_500 : true
@@ -139,6 +131,7 @@ app.get('/500', function(req, res){
 
 app.use(function(err, req, res, next) {
     console.log(new Date().toISOString() + "# " + err);
+    console.trace(err);
     res.redirect('/500');
 });
 
@@ -146,14 +139,15 @@ app.get('*', function(req, res){
     res.redirect('/404');
 });
 
+//////////////////////
+// Setup Server
+//////////////////////
 
-//////////////////////
-// Global variables
-//////////////////////
+var draftServerClass = require('./server_files/draft_server.js');
+var draftServer = new draftServerClass();
 
 // Stats tracing
-var stats = {};
-stats.startingdate = new Date();
+var stats = {};;
 stats.roomEnd = 0;
 stats.startedRooms = 0;
 stats.runningRooms = 0;
