@@ -7,7 +7,7 @@ function draftServer () {
 
     // Server Attributes
     this.rooms = {};
-    this.matchmakingWaitingRooms = {};
+    this.matchmakingWaitingRooms = { "cm" : null, "cd" : null};
     this.privateWaitingRooms = {};
 }
 
@@ -51,6 +51,33 @@ draftServer.prototype.getPrivateWaitingRoom = function(id) {
 };
 draftServer.prototype.removePrivateWaitingRoom = function(id) {
     delete this.privateWaitingRooms[id];
+};
+draftServer.prototype.getRoomsCount = function() {
+    var count = 0;
+    for (var k in this.rooms) {
+        if (this.rooms.hasOwnProperty(k)) {
+            ++count;
+        }
+    }
+    return count;
+};
+draftServer.prototype.hasRoom = function(id) {
+    var room = this.rooms[id];
+    return !(typeof(room) === 'undefined' || room === null);
+};
+
+draftServer.prototype.getUnusedId = function() {
+    var used = true;
+    var id = -1;
+    while(used) {
+        id = Math.floor(Math.random()*10000);
+        if (!this.hasPrivateWaitingRoom(id) && !this.hasRoom(id)
+            && (this.matchmakingWaitingRooms.cm === null || this.matchmakingWaitingRooms.cm.getId() != id)
+            && (this.matchmakingWaitingRooms.cd === null || this.matchmakingWaitingRooms.cd.getId() != id)) {
+            used = false;
+        }
+    }
+    return id;
 };
 
 module.exports = draftServer;

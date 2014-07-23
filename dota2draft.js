@@ -55,7 +55,7 @@ app.get('/:name(index|)', function (req, res, next) {
         title : 'Dota 2 Draft',
         server_state_date : draftServer.getSessionDate().toGMTString(),
         drafts_started_count : draftServer.getStartCount(),
-        drafts_running_count : stats.runningRooms,
+        drafts_running_count : draftServer.getRoomsCount(),
         redrafts_count : draftServer.getRedraftCount(),
         drafts_ended_count : draftServer.getEndCount()
     });
@@ -157,10 +157,6 @@ var playerClass = require('./server_files/player.js');
 
 var draftServer = new draftServerClass();
 
-// Stats tracing
-var stats = {};
-stats.runningRooms = 0;
-
 // Room management
 var rooms = {};
 var id = 0;
@@ -216,7 +212,6 @@ function decreaseFunction(room) {
 
             clearInterval(room.decreaseTimer);
             delete rooms[room.id];
-            stats.runningRooms--;
         }
     }
 }
@@ -263,7 +258,6 @@ io.sockets.on('connection', function (socket) {
                     rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
                     socketData.roomId = privRoom.id;
 					draftServer.removePrivateWaitingRoom(privRoom.id);
-                    stats.runningRooms++;
 				}
 			}
 		} else {
@@ -285,7 +279,6 @@ io.sockets.on('connection', function (socket) {
                 rooms[freeRoom[data.mode].id].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
                 socketData.roomId = freeRoom[data.mode].id;
 				freeRoom[data.mode] = null;
-                stats.runningRooms++;
 			}
 			
 		}
@@ -785,7 +778,6 @@ io.sockets.on('connection', function (socket) {
 
                 clearInterval(room.decreaseTimer);
                 delete rooms[socketData.roomId];
-                stats.runningRooms--;
 
                 return;
             }
