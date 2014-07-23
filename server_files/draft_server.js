@@ -4,6 +4,11 @@ function draftServer () {
     this.startCount = 0;
     this.endCount = 0;
     this.redraftCount = 0;
+
+    // Server Attributes
+    this.rooms = {};
+    this.matchmakingWaitingRooms = {};
+    this.privateWaitingRooms = {};
 }
 
 // Getters
@@ -29,6 +34,23 @@ draftServer.prototype.incrementEndCount = function() {
 };
 draftServer.prototype.incrementRedraftCount = function() {
     this.redraftCount++;
+};
+
+draftServer.prototype.addPrivateWaitingRoom = function(room) {
+    this.privateWaitingRooms[room.id] = room;
+};
+draftServer.prototype.hasPrivateWaitingRoom = function(id) {
+    var room = this.privateWaitingRooms[id];
+    return !(typeof(room) === 'undefined' || room === null);
+};
+draftServer.prototype.getPrivateWaitingRoom = function(id) {
+    if (this.hasPrivateWaitingRoom(id))
+        return this.privateWaitingRooms[id];
+    else
+        return null;
+};
+draftServer.prototype.removePrivateWaitingRoom = function(id) {
+    delete this.privateWaitingRooms[id];
 };
 
 module.exports = draftServer;

@@ -164,11 +164,12 @@ stats.runningRooms = 0;
 // Room management
 var rooms = {};
 var id = 0;
-var freeRoom = { };
-var privateRooms = {};
+var freeRoom = {};
 
 function getIntervalFunction(room, time) {
-    return setInterval(function() {decreaseFunction(rooms[eval(room)])}, time);
+    return setInterval(function() {
+        decreaseFunction(rooms[eval(room)])
+    }, time);
 }
 
 function decreaseFunction(room) {
@@ -232,7 +233,7 @@ io.sockets.on('connection', function (socket) {
         socketData.type = "player";
         socketData.uuid = uuid.v1();
 			
-		if (typeof(data) == 'undefined') {
+		if (typeof(data) === 'undefined') {
             socket.disconnect();
 			return;
         }
@@ -241,17 +242,17 @@ io.sockets.on('connection', function (socket) {
 			if (data.roomId == null) {
 				var newRoom = buildRoom(id, socket, null, data.nick, null, data.mode);
                 newRoom.isPv = true;
-				privateRooms[id] = newRoom;
+                draftServer.addPrivateWaitingRoom(newRoom);
 				socket.emit('join_success', { roomId : id });
                 socketData.roomId = id;
 				id++;
                 if (id > 9999) id = 0;
 			} else {
-				var privRoom = privateRooms[data.roomId];
-				if (typeof(privRoom) == 'undefined') {
+				if (!draftServer.hasPrivateWaitingRoom(data.roomId)) {
 					socket.emit('join_fail', { error : 'noroom' });
 					return;
 				} else {
+                    var privRoom = draftServer.getPrivateWaitingRoom(data.roomId);
 					privRoom.player2 = socket;
 					privRoom.player2nickname = data.nick;
                     privRoom.lastActivity = new Date();
@@ -261,7 +262,7 @@ io.sockets.on('connection', function (socket) {
 					rooms[privRoom.id] = privRoom;
                     rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
                     socketData.roomId = privRoom.id;
-					delete privateRooms[privRoom.id];
+					draftServer.removePrivateWaitingRoom(privRoom.id);
                     stats.runningRooms++;
 				}
 			}
@@ -757,9 +758,8 @@ io.sockets.on('connection', function (socket) {
                 return;
             }
 
-            room = privateRooms[socketData.roomId];
-            if (!(room === undefined) && room != null) {
-                delete privateRooms[socketData.roomId];
+            if (draftServer.hasPrivateWaitingRoom(socketData.roomId)) {
+                draftServer.removePrivateWaitingRoom(socketData.roomId);
                 return;
             }
 
