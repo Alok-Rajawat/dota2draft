@@ -164,7 +164,7 @@ stats.runningRooms = 0;
 // Room management
 var rooms = {};
 var id = 0;
-var freeRoom = { 'middle' : null, 'pro' : null };
+var freeRoom = { };
 var privateRooms = {};
 
 function getIntervalFunction(room, time) {
@@ -749,14 +749,11 @@ io.sockets.on('connection', function (socket) {
             return;
 
         if (socketData.type == "player") {
-            if(freeRoom['low'] != null && freeRoom['low'].player1 == socket) {
-                freeRoom['low'] = null;
+            if(freeRoom['cm'] != null && freeRoom['cm'].player1 == socket) {
+                freeRoom['cm'] = null;
                 return;
-            } else if (freeRoom['middle'] != null && freeRoom['middle'].player1 == socket) {
-                freeRoom['middle'] = null;
-                return;
-            } else if (freeRoom['high'] != null && freeRoom['high'].player1 == socket) {
-                freeRoom['high'] = null;
+            } else if (freeRoom['cd'] != null && freeRoom['cd'].player1 == socket) {
+                freeRoom['cd'] = null;
                 return;
             }
 
