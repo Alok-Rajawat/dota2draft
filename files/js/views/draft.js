@@ -141,7 +141,7 @@ jQuery(function ($) {
         writeToChat('>>> ' + getOpponentNickname() + ' connected. Waiting players to be ready.');
         status = 'WaitingForReady';
         $("#readyButton").show();
-        $("#dingSound").trigger("play");
+        highlightTab();
     });
 
     socket.on('player_left', function () {
@@ -227,7 +227,7 @@ jQuery(function ($) {
         } else {
             writeToChat('>>> ' + getOpponentNickname() + ' chooses side.');
         }
-        $("#dingSound").trigger("play");
+        highlightTab();
     });
 
     socket.on('setup_mode', function (data) {
@@ -807,4 +807,30 @@ jQuery(function ($) {
     if ($('#pub').height() == 0) {
         $('#advert').css("background-image", "url(files/css/images/adblocked.jpg)");
     }
+
+    var window_focus = true;
+    var titles = [];
+    titles.push(window.document.title);
+    titles.push(window.document.title + " - Player Joined")
+    var currentTitle = 0;
+    var titleChanger = null;
+    function highlightTab() {
+        $("#dingSound").trigger("play");
+        if (!window_focus) {
+            titleChanger = setInterval(function() {
+                currentTitle = (currentTitle + 1) % 2;
+                window.document.title = titles[currentTitle];
+            }, 800);
+        }
+    }
+
+    $(window).bind("focus", function() {
+        window_focus = true;
+        clearInterval(titleChanger);
+        window.document.title = titles[0];
+    });
+    $(window).bind("blur", function() {
+        window_focus = false;
+    });
+
 });
