@@ -157,65 +157,6 @@ var playerClass = require('./server_files/player.js');
 
 var draftServer = new draftServerClass();
 
-// Room management
-var rooms = {};
-var id = 0;
-var freeRoom = {};
-
-function getIntervalFunction(room, time) {
-    return setInterval(function() {
-        decreaseFunction(rooms[eval(room)])
-    }, time);
-}
-
-function decreaseFunction(room) {
-    var dateNow = new Date();
-    if (room == null) return;
-    if (room.pickingSide != null) {
-
-        // DEC TIME
-        if(room.globalTime != 0)
-            room.globalTime--;
-        else {
-            var side = null;
-            if (room.pickingSide == 'Radiant')
-                side = room.radiant;
-            else
-                side = room.dire;
-
-            if (side.time.sec != 0)
-                side.time.sec--;
-            else {
-                if (side.time.min != 0) {
-                    side.time.min--;
-                    side.time.sec = 59;
-                } else {
-                    var index = Math.floor(Math.random()*room.heroes.length);
-                    processHeroChoice(room, room.heroes[index]);
-                }
-            }
-        }
-    }
-    if (room.id >= 0) {
-        if (dateNow - room.lastActivity > 600000) {
-            room.player1.emit('no_activity_timeout', {});
-            room.player2.emit('no_activity_timeout', {});
-
-            for (var spectatorUUID in room.spectators) {
-                if (spectatorUUID == 'clone') continue;
-                room.spectators[spectatorUUID].emit('no_activity_timeout', {});
-                room.spectators[spectatorUUID].disconnect();
-            }
-            room.inactivityTimeout = true;
-            room.player1.disconnect();
-            room.player2.disconnect();
-
-            clearInterval(room.decreaseTimer);
-            delete rooms[room.id];
-        }
-    }
-}
-
 //////////////////////
 // NETWORK
 //////////////////////
@@ -224,66 +165,23 @@ io.sockets.on('connection', function (socket) {
 	socket.emit('connection_success');
 
 	socket.on('join', function(data) {
-        var socketData = {};
-        socketData.type = "player";
-        socketData.uuid = uuid.v1();
-			
-		if (typeof(data) === 'undefined') {
+        // Security check
+        if (typeof(data) === 'undefined' || data === null) {
             socket.disconnect();
-			return;
+            return;
         }
-		
-		if (data.roomType == 'pv') {
-			if (data.roomId == null) {
-				var newRoom = buildRoom(id, socket, null, data.nick, null, data.mode);
-                newRoom.isPv = true;
-                draftServer.addPrivateWaitingRoom(newRoom);
-				socket.emit('join_success', { roomId : id });
-                socketData.roomId = id;
-				id++;
-                if (id > 9999) id = 0;
-			} else {
-				if (!draftServer.hasPrivateWaitingRoom(data.roomId)) {
-					socket.emit('join_fail', { error : 'noroom' });
-					return;
-				} else {
-                    var privRoom = draftServer.getPrivateWaitingRoom(data.roomId);
-					privRoom.player2 = socket;
-					privRoom.player2nickname = data.nick;
-                    privRoom.lastActivity = new Date();
-					socket.emit('join_success');
-					privRoom.player1.emit('player_join', {nick : data.nick});
-					socket.emit('player_join', {nick : privRoom.player1nickname});
-					rooms[privRoom.id] = privRoom;
-                    rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
-                    socketData.roomId = privRoom.id;
-					draftServer.removePrivateWaitingRoom(privRoom.id);
-				}
-			}
+
+        // Create the new player
+        var player = new playerClass(uuid.v1(), data.nick, socket, "player");
+        console.log(player.socket);
+
+		if (data.roomType === 'pv') {
+            draftServer.addPlayerToPrivateRoom(data.roomId, player, data.mode);
 		} else {
-			if (freeRoom[data.mode] == null) {
-				freeRoom[data.mode] = buildRoom(id, socket, null, data.nick, null, data.mode);
-                freeRoom[data.mode].isPv = false;
-				id++;
-                if (id > 9999) id = 0;
-				socket.emit('join_success');
-                socketData.roomId = freeRoom[data.mode].id;
-			} else if (freeRoom[data.mode].player2 == null) {
-				freeRoom[data.mode].player2 = socket;
-				freeRoom[data.mode].player2nickname = data.nick;
-                freeRoom[data.mode].lastActivity = new Date();
-				socket.emit('join_success');
-				freeRoom[data.mode].player1.emit('player_join', {nick : data.nick});
-				socket.emit('player_join', {nick : freeRoom[data.mode].player1nickname} );
-				rooms[freeRoom[data.mode].id] = freeRoom[data.mode];
-                rooms[freeRoom[data.mode].id].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
-                socketData.roomId = freeRoom[data.mode].id;
-				freeRoom[data.mode] = null;
-			}
-			
+            draftServer.matchmakingPlayer(player, data.mode);
 		}
 
-        socket.socketData = socketData;
+        socket.player = player;
 	});
 
 
@@ -711,28 +609,24 @@ io.sockets.on('connection', function (socket) {
 	// CHAT
 	
 	socket.on('message', function(data) {
-        var socketData = socket.socketData;
-        if (socketData == null)
+        var player = socket.player;
+        if (typeof(player) === "undefined" || player === null) {
+            socket.disconnect();
             return;
-
-        var room = rooms[socketData.roomId];
-        if (room == null)
-            return;
-        room.lastActivity = new Date();
-
-        var player = "";
-        if (room.player1 == socket) {
-            player = "player1";
-            room.player2.emit('message', data);
-        } else {
-            player = "player2";
-            room.player1.emit('message', data);
         }
 
-        for (var spectatorUUID in room.spectators) {
+        var room = draftServer.getRoom(player.getRoomId());
+        if (room.getPlayer1().equals(player)) {
+            room.getPlayer2().emit('message', data);
+        } else {
+            room.getPlayer1().emit('message', data);
+        }
+
+        // TODO SPECTATORS
+        /*for (var spectatorUUID in room.spectators) {
             if (spectatorUUID == 'clone') continue;
             room.spectators[spectatorUUID].emit('message', { player : player, message : data.message});
-        }
+        }*/
 	});
 	
 	// END OF CONNECTION

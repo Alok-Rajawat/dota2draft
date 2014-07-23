@@ -1,4 +1,4 @@
-function room (roomId, roomPlayer1, roomMode) {
+function room (roomId, roomPlayer1, roomMode, roomPrivate) {
     // Room unique id
     var id = roomId;
     // First player creating the room
@@ -15,8 +15,11 @@ function room (roomId, roomPlayer1, roomMode) {
     // Spectators
     var spectators = {};
 
+    // Settings
+    var mode = roomMode === "cd" ? "cd" : "cm";
+    var private = roomPrivate;
+
     // State
-    var mode = roomMode;
     var sideChosen = false;
     var sideChooseAgain = false;
     var firstPickChosen = false;
@@ -41,13 +44,16 @@ function room (roomId, roomPlayer1, roomMode) {
     var direTime = 0;
     var lastActivity = new Date();
     var inactivityTimeout = false;
-    var timeInterval = null;
+    var timerInterval = null;
 }
 
 // Getters
 room.prototype.getId = function() {
     return this.id;
 };
+room.prototype.isPrivate = function() {
+    return this.private;
+}
 room.prototype.getSpectatorCount = function() {
     var count = 0;
     for (var k in this.spectators) {
@@ -56,9 +62,25 @@ room.prototype.getSpectatorCount = function() {
         }
     }
     return count;
-}
+};
+room.prototype.getPlayer1 = function() {
+    return this.player1;
+};
+room.prototype.getPlayer2 = function() {
+    return this.player2;
+};
 
 // Methods
+room.prototype.setPlayer2 = function(player) {
+    this.player2 = player;
+};
+room.prototype.touch = function() {
+    this.lastActivity = new Date();
+};
+room.prototype.startTimer = function(draftServer) {
+    console.log("TODO START TIMER");
+    //rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
+}
 
 module.exports = room;
 
@@ -89,4 +111,58 @@ function buildRoom(id, player1socket, player2socket, player1nick, player2nick, m
 
     return buildRoom;
 };
-    */
+
+function getIntervalFunction(room, time) {
+    return setInterval(function() {
+        decreaseFunction(rooms[eval(room)])
+    }, time);
+}
+
+function decreaseFunction(room) {
+    var dateNow = new Date();
+    if (room == null) return;
+    if (room.pickingSide != null) {
+
+        // DEC TIME
+        if(room.globalTime != 0)
+            room.globalTime--;
+        else {
+            var side = null;
+            if (room.pickingSide == 'Radiant')
+                side = room.radiant;
+            else
+                side = room.dire;
+
+            if (side.time.sec != 0)
+                side.time.sec--;
+            else {
+                if (side.time.min != 0) {
+                    side.time.min--;
+                    side.time.sec = 59;
+                } else {
+                    var index = Math.floor(Math.random()*room.heroes.length);
+                    processHeroChoice(room, room.heroes[index]);
+                }
+            }
+        }
+    }
+    if (room.id >= 0) {
+        if (dateNow - room.lastActivity > 600000) {
+            room.player1.emit('no_activity_timeout', {});
+            room.player2.emit('no_activity_timeout', {});
+
+            for (var spectatorUUID in room.spectators) {
+                if (spectatorUUID == 'clone') continue;
+                room.spectators[spectatorUUID].emit('no_activity_timeout', {});
+                room.spectators[spectatorUUID].disconnect();
+            }
+            room.inactivityTimeout = true;
+            room.player1.disconnect();
+            room.player2.disconnect();
+
+            clearInterval(room.decreaseTimer);
+            delete rooms[room.id];
+        }
+    }
+}
+*/
