@@ -54,10 +54,10 @@ app.get('/:name(index|)', function (req, res, next) {
         cfg : cfg,
         title : 'Dota 2 Draft',
         server_state_date : draftServer.getSessionDate().toGMTString(),
-        drafts_started_count : stats.startedRooms,
+        drafts_started_count : draftServer.getStartCount(),
         drafts_running_count : stats.runningRooms,
-        redrafts_count : stats.redraftRooms,
-        drafts_ended_count : stats.roomEnd
+        redrafts_count : draftServer.getRedraftCount(),
+        drafts_ended_count : draftServer.getEndCount()
     });
 });
 
@@ -152,20 +152,17 @@ app.get('*', function(req, res){
 //////////////////////
 
 var draftServerClass = require('./server_files/draft_server.js');
+var roomClass = require('./server_files/room.js');
+var playerClass = require('./server_files/player.js');
+
 var draftServer = new draftServerClass();
 
 // Stats tracing
-var stats = {};;
-stats.roomEnd = 0;
-stats.startedRooms = 0;
+var stats = {};
 stats.runningRooms = 0;
-stats.redraftRooms = 0;
 
 // Room management
 var rooms = {};
-function getRoom(id) {
-    return rooms[id];
-}
 var id = 0;
 var freeRoom = { 'middle' : null, 'pro' : null };
 var privateRooms = {};
@@ -394,7 +391,7 @@ io.sockets.on('connection', function (socket) {
                 room.spectators[spectatorUUID].emit('redraft_start', {} );
             }
 
-            stats.redraftRooms++;
+            draftServer.incrementRedraftCount();
         }
 	});
 	
@@ -453,7 +450,7 @@ io.sockets.on('connection', function (socket) {
         }
 
         if (start) {
-            stats.startedRooms++;
+            draftServer.incrementStartCount();
             if (room.isPv) {
                 DecideVersion(room);
             } else {
@@ -1029,7 +1026,7 @@ function processHeroChoice(room, hero) {
             room.globalTime = 0;
             room.action = 'Laning';
             room.pickingSide = null;
-            stats.roomEnd++;
+            draftServer.incrementEndCount();
         } else {
             if (room.mode == "cm") {
                 if (pickSide.pick == 2 && unpickSide.pick == 2) {
