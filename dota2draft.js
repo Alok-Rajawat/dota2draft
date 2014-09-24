@@ -55,7 +55,7 @@ app.get('/:name(index|)', function (req, res, next) {
         title : 'Dota 2 Draft',
         server_state_date : draftServer.getSessionDate().toGMTString(),
         drafts_started_count : draftServer.getStartCount(),
-        drafts_running_count : draftServer.getRoomsCount(),
+        drafts_running_count : draftServer.getRoomsCount(rooms),
         redrafts_count : draftServer.getRedraftCount(),
         drafts_ended_count : draftServer.getEndCount()
     });

@@ -52,11 +52,12 @@ draftServer.prototype.getPrivateWaitingRoom = function(id) {
 draftServer.prototype.removePrivateWaitingRoom = function(id) {
     delete this.privateWaitingRooms[id];
 };
-draftServer.prototype.getRoomsCount = function() {
+draftServer.prototype.getRoomsCount = function(allRooms) {
     var count = 0;
-    for (var k in this.rooms) {
-        if (this.rooms.hasOwnProperty(k)) {
-            ++count;
+    for (var k in allRooms) {
+        if (allRooms.hasOwnProperty(k)) {
+            console.log("Hello here !");
+            count++;
         }
     }
     return count;
