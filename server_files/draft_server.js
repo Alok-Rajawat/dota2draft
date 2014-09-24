@@ -58,6 +58,8 @@ draftServer.prototype.addPlayerToPrivateRoom = function(id, player, mode) {
     if (id === null) {
         // New private room
         var newRoom = new roomClass(this.getUnusedId(), player, mode, true);
+
+        console.log(newRoom.getId());
         this.addPrivateWaitingRoom(newRoom);
         player.getSocket().emit('join_success', { roomId : newRoom.getId() });
         player.setRoomId(newRoom.getId());
@@ -130,7 +132,7 @@ draftServer.prototype.getRoom = function(id) {
 
 draftServer.prototype.getUnusedId = function() {
     var used = true;
-    var id = -1;
+    var id = new Integer(-1);
     while(used) {
         id = Math.floor(Math.random()*10000);
         if (!this.hasPrivateWaitingRoom(id) && !this.hasRoom(id)

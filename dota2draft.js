@@ -172,8 +172,8 @@ io.sockets.on('connection', function (socket) {
         }
 
         // Create the new player
-        var player = new playerClass(uuid.v1(), data.nick, socket, "player");
-        console.log(player.socket);
+        var player = new playerClass(uuid.v1(), data.nick, "player");
+        player.socket = socket; // hack to keep socket object alive
 
 		if (data.roomType === 'pv') {
             draftServer.addPlayerToPrivateRoom(data.roomId, player, data.mode);

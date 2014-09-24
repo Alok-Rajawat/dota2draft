@@ -1,10 +1,10 @@
-function player (playerUuid, playerNickname, playerSocket, playerType) {
+function player (playerUuid, playerNickname, playerType) {
     // Unique identifier
     var uuid = playerUuid;
     // Nickname of the player
     var nickname = playerNickname;
     // Socket linked to the player
-    var socket = playerSocket;
+    var socket = null;
     // Type of player (spectator or player)
     var type = (playerType === "player") ? "player" : "spectator";
 

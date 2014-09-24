@@ -1,6 +1,7 @@
 function room (roomId, roomPlayer1, roomMode, roomPrivate) {
+
     // Room unique id
-    var id = roomId;
+    var _id = roomId;
     // First player creating the room
     var player1 = roomPlayer1;
     // Second player joining the room
@@ -49,7 +50,7 @@ function room (roomId, roomPlayer1, roomMode, roomPrivate) {
 
 // Getters
 room.prototype.getId = function() {
-    return this.id;
+    return this._id;
 };
 room.prototype.isPrivate = function() {
     return this.private;
