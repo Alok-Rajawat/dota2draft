@@ -56,7 +56,6 @@ draftServer.prototype.getRoomsCount = function(allRooms) {
     var count = 0;
     for (var k in allRooms) {
         if (allRooms.hasOwnProperty(k)) {
-            console.log("Hello here !");
             count++;
         }
     }

@@ -835,6 +835,7 @@ function setupHeroPool(room, version) {
         'chaos_knight',
         'undying',
         'magnus',
+        'legion_commander',
         'abaddon'
     );
     room.heroes.agi.push(
@@ -843,7 +844,6 @@ function setupHeroPool(room, version) {
         'juggernaut',
         'mirana',
         'morphling',
-        'phantom_lancer',
         'vengeful_spirit',
         'riki',
         'sniper',
@@ -855,7 +855,6 @@ function setupHeroPool(room, version) {
         'lone_druid',
         'naga_siren',
         'troll_warlord',
-        'bloodseeker',
         'shadow_fiend',
         'razor',
         'venomancer',
@@ -869,6 +868,7 @@ function setupHeroPool(room, version) {
         'nyx_assassin',
         'slark',
         'ember_spirit',
+        'terrorblade',
         'medusa'
     );
     room.heroes.int.push(
@@ -914,12 +914,15 @@ function setupHeroPool(room, version) {
     if (version == 'Latest') {
         room.heroes.str.push(
             'earth_spirit',
-            'legion_commander',
             'phoenix'
         );
         room.heroes.agi.push(
-            'broodmother',
-            'terrorblade'
+            'bloodseeker',
+            'phantom_lancer',
+            'broodmother'
+        );
+        room.heroes.int.push(
+            'techies'
         );
     }
 }
@@ -1005,7 +1008,7 @@ function processHeroChoice(room, hero) {
 			room.action = 'Pick';
             room.globalTime = 39;
         }
-        if (!(pickSide.ban == 4 && unpickSide.ban == 4)) {
+        if (!((pickSide.ban == 4 && unpickSide.ban == 4) || (pickSide.ban == 5 && unpickSide.ban ==5))) {
             room.pickingSide = unpickSide.name;
         }
 	} else {
@@ -1022,7 +1025,6 @@ function processHeroChoice(room, hero) {
                     room.action = 'Ban';
                     room.globalTime = 29;
                 } else if (pickSide.pick == 4 && unpickSide.pick == 4) {
-                    room.pickingSide = unpickSide.name;
                     room.action = 'Ban';
                     room.globalTime = 29;
                 } else {
