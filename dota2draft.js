@@ -1008,7 +1008,7 @@ function processHeroChoice(room, hero) {
 			room.action = 'Pick';
             room.globalTime = 39;
         }
-        if (!((pickSide.ban == 4 && unpickSide.ban == 4) || (pickSide.ban == 5 && unpickSide.ban ==5))) {
+        if (!(pickSide.ban == 4 && unpickSide.ban == 4)) {
             room.pickingSide = unpickSide.name;
         }
 	} else {
@@ -1025,6 +1025,7 @@ function processHeroChoice(room, hero) {
                     room.action = 'Ban';
                     room.globalTime = 29;
                 } else if (pickSide.pick == 4 && unpickSide.pick == 4) {
+                    room.pickingSide = unpickSide.name;
                     room.action = 'Ban';
                     room.globalTime = 29;
                 } else {
