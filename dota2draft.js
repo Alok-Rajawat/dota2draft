@@ -268,17 +268,20 @@ io.sockets.on('connection', function (socket) {
                 if (id > 9999) id = 0;
 				socket.emit('join_success');
                 socketData.roomId = freeRoom[data.mode].id;
-			} else if (freeRoom[data.mode].player2 == null) {
+			} else {
 				freeRoom[data.mode].player2 = socket;
 				freeRoom[data.mode].player2nickname = data.nick;
                 freeRoom[data.mode].lastActivity = new Date();
-				socket.emit('join_success');
-				freeRoom[data.mode].player1.emit('player_join', {nick : data.nick});
-				socket.emit('player_join', {nick : freeRoom[data.mode].player1nickname} );
-				rooms[freeRoom[data.mode].id] = freeRoom[data.mode];
-                rooms[freeRoom[data.mode].id].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
                 socketData.roomId = freeRoom[data.mode].id;
+
+				rooms[socketData.roomId] = freeRoom[data.mode];
+                rooms[socketData.roomId].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
 				freeRoom[data.mode] = null;
+
+                socket.emit('join_success');
+                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick});
+                payload = { nick : rooms[socketData.roomId].player1nickname };
+                socket.emit('player_join', payload );
 			}
 			
 		}
