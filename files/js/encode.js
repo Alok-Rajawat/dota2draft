@@ -107,7 +107,8 @@ var draftParameters = {
     'legion_commander',
     'phoenix',
     'terrorblade',
-    'techies'],
+    'techies',
+    'oracle'],
 	
 	lanes : ['Mid', 'Top', 'Bot', 'Woods', 'Roam'],
 	

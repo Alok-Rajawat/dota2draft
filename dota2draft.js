@@ -448,8 +448,9 @@ io.sockets.on('connection', function (socket) {
 
         if (start) {
             draftServer.incrementStartCount();
-            if (room.isPv) {
-                DecideVersion(room);
+            if (room.mode == "cd") {
+                setupHeroPool(room, 'Latest');
+                DecideSides(room);
             } else {
                 setupHeroPool(room, 'Tournament');
                 DecideSides(room);
@@ -839,7 +840,8 @@ function setupHeroPool(room, version) {
         'undying',
         'magnus',
         'legion_commander',
-        'abaddon'
+        'abaddon',
+        'phoenix'
     );
     room.heroes.agi.push(
         'anti_mage',
@@ -872,8 +874,9 @@ function setupHeroPool(room, version) {
         'slark',
         'ember_spirit',
         'terrorblade',
-        'medusa'
-    );
+        'medusa',
+        'broodmother'
+);
     room.heroes.int.push(
         'crystal_maiden',
         'puck',
@@ -916,16 +919,15 @@ function setupHeroPool(room, version) {
 
     if (version == 'Latest') {
         room.heroes.str.push(
-            'earth_spirit',
-            'phoenix'
+            'earth_spirit'
         );
         room.heroes.agi.push(
             'bloodseeker',
-            'phantom_lancer',
-            'broodmother'
+            'phantom_lancer'
         );
         room.heroes.int.push(
-            'techies'
+            'techies',
+            'oracle'
         );
     }
 }

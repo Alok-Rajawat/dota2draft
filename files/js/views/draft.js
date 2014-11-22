@@ -213,7 +213,6 @@ jQuery(function ($) {
 
     socket.on('side_choose', function (data) {
         // Setup version
-        writeToChat('>>> Draft version is ' + data.version.name + ' version.');
         setupVersion(data.version.heroes);
 
         // Side choose
