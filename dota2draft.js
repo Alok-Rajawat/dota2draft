@@ -238,10 +238,10 @@ io.sockets.on('connection', function (socket) {
 				var newRoom = buildRoom(id, socket, null, data.nick, null, data.mode);
                 newRoom.isPv = true;
                 draftServer.addPrivateWaitingRoom(newRoom);
-				socket.emit('join_success', { roomId : id });
                 socketData.roomId = id;
 				id++;
                 if (id > 9999) id = 0;
+				socket.emit('join_success', { roomId : id });
 			} else {
 				if (!draftServer.hasPrivateWaitingRoom(data.roomId)) {
 					socket.emit('join_fail', { error : 'noroom' });
@@ -251,13 +251,13 @@ io.sockets.on('connection', function (socket) {
 					privRoom.player2 = socket;
 					privRoom.player2nickname = data.nick;
                     privRoom.lastActivity = new Date();
-					socket.emit('join_success');
-					privRoom.player1.emit('player_join', {nick : data.nick});
-					socket.emit('player_join', {nick : privRoom.player1nickname});
 					rooms[privRoom.id] = privRoom;
                     rooms[privRoom.id].decreaseTimer = getIntervalFunction(privRoom.id, 1000);
                     socketData.roomId = privRoom.id;
 					draftServer.removePrivateWaitingRoom(privRoom.id);
+					socket.emit('join_success');
+					privRoom.player1.emit('player_join', {nick : data.nick});
+					socket.emit('player_join', {nick : privRoom.player1nickname});
 				}
 			}
 		} else {
@@ -266,8 +266,8 @@ io.sockets.on('connection', function (socket) {
                 freeRoom[data.mode].isPv = false;
 				id++;
                 if (id > 9999) id = 0;
-				socket.emit('join_success');
                 socketData.roomId = freeRoom[data.mode].id;
+				socket.emit('join_success');
 			} else {
 				freeRoom[data.mode].player2 = socket;
 				freeRoom[data.mode].player2nickname = data.nick;
@@ -277,10 +277,9 @@ io.sockets.on('connection', function (socket) {
 				rooms[socketData.roomId] = freeRoom[data.mode];
                 rooms[socketData.roomId].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
 				freeRoom[data.mode] = null;
-
-                socket.emit('join_success');
-                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick});
                 payload = { nick : rooms[socketData.roomId].player1nickname };
+                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick});
+                socket.emit('join_success');
                 socket.emit('player_join', payload );
 			}
 			
@@ -335,7 +334,8 @@ io.sockets.on('connection', function (socket) {
 
         for (var spectatorUUID in room.spectators) {
             if (spectatorUUID == 'clone') continue;
-            room.spectators[spectatorUUID].emit('spectator_count', { spectatorsCount : room.spectatorsCount });
+            specCount = room.spectatorsCount;
+            room.spectators[spectatorUUID].emit('spectator_count', { spectatorsCount : specCount });
         }
     }
 	
@@ -354,16 +354,16 @@ io.sockets.on('connection', function (socket) {
         var redraftPlayer = "";
         if (room.player1 == socket && room.player1redraft == false) {
             room.player1redraft = true;
-            room.player1.emit('redraft', { player : 'you'});
-            room.player2.emit('redraft', { player : 'opponent'});
             redraftPlayer = "player1";
             start = room.player2redraft;
+            room.player1.emit('redraft', { player : 'you'});
+            room.player2.emit('redraft', { player : 'opponent'});
         } else if (room.player2 == socket && room.player2redraft == false) {
             room.player2redraft = true;
-            room.player1.emit('redraft', { player : 'opponent'});
-            room.player2.emit('redraft', { player : 'you'});
             redraftPlayer = "player2";
             start = room.player1redraft;
+            room.player1.emit('redraft', { player : 'opponent'});
+            room.player2.emit('redraft', { player : 'you'});
         }
 
         for (var spectatorUUID in room.spectators) {
@@ -380,6 +380,9 @@ io.sockets.on('connection', function (socket) {
             delete rooms[socketData.roomId];
             newRoom.decreaseTimer = getIntervalFunction(newRoom.id, 1000);
             rooms[newRoom.id] = newRoom;
+            
+            draftServer.incrementRedraftCount();
+            
             newRoom.player1.emit('redraft_start');
             newRoom.player2.emit('redraft_start');
 
@@ -387,8 +390,6 @@ io.sockets.on('connection', function (socket) {
                 if (spectatorUUID == 'clone') continue;
                 room.spectators[spectatorUUID].emit('redraft_start', {} );
             }
-
-            draftServer.incrementRedraftCount();
         }
 	});
 	
@@ -430,15 +431,15 @@ io.sockets.on('connection', function (socket) {
         if (room.player1 == socket && room.player1ready == false) {
             room.player1ready = true;
             playerReady = "player1";
+            start = room.player2ready;
             room.player1.emit('player_ready', { player : 'you'});
             room.player2.emit('player_ready', { player : 'opponent'});
-            start = room.player2ready;
         } else if (room.player2 == socket && room.player2ready == false) {
             room.player2ready = true;
             playerReady = "player2";
+            start = room.player1ready;
             room.player1.emit('player_ready', { player : 'opponent'});
             room.player2.emit('player_ready', { player : 'you'});
-            start = room.player1ready;
         }
 
         for (var spectatorUUID in room.spectators) {
@@ -621,6 +622,8 @@ io.sockets.on('connection', function (socket) {
         if (beginSide != 'Other') {
             setupMode(room);
             var payloadData = { mode : room.mode, heroes : room.heroes, radiantTime : room.radiant.time, direTime : room.dire.time, globalTime : room.globalTime};
+            room.pickingSide = beginSide;
+            
             chooser.emit('setup_mode', payloadData);
             nonChooser.emit('setup_mode', payloadData);
 
@@ -628,7 +631,6 @@ io.sockets.on('connection', function (socket) {
                 if (spectatorUUID == 'clone') continue;
                 room.spectators[spectatorUUID].emit('setup_mode', payloadData);
             }
-            room.pickingSide = beginSide;
         }
 	});
 	
