@@ -877,6 +877,7 @@ function setupHeroPool(room, version) {
         'ember_spirit',
         'terrorblade',
         'medusa',
+        'bloodseeker',
         'broodmother'
 );
     room.heroes.int.push(
@@ -916,6 +917,7 @@ function setupHeroPool(room, version) {
         'invoker',
         'outlord_destroyer',
         'shadow_demon',
+        'techies',
         'visage'
     );
 
@@ -924,11 +926,9 @@ function setupHeroPool(room, version) {
             'earth_spirit'
         );
         room.heroes.agi.push(
-            'bloodseeker',
             'phantom_lancer'
         );
         room.heroes.int.push(
-            'techies',
             'oracle'
         );
     }
