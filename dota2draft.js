@@ -241,7 +241,7 @@ io.sockets.on('connection', function (socket) {
                 socketData.roomId = id;
 				id++;
                 if (id > 9999) id = 0;
-				socket.emit('join_success', { roomId : id });
+				socket.emit('join_success', { roomId : socketData.roomId });
 			} else {
 				if (!draftServer.hasPrivateWaitingRoom(data.roomId)) {
 					socket.emit('join_fail', { error : 'noroom' });
