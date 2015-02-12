@@ -878,8 +878,9 @@ function setupHeroPool(room, version) {
         'terrorblade',
         'medusa',
         'bloodseeker',
-        'broodmother'
-);
+        'broodmother',
+        'phantom_lancer'
+    );
     room.heroes.int.push(
         'crystal_maiden',
         'puck',
@@ -924,9 +925,6 @@ function setupHeroPool(room, version) {
     if (version == 'Latest') {
         room.heroes.str.push(
             'earth_spirit'
-        );
-        room.heroes.agi.push(
-            'phantom_lancer'
         );
         room.heroes.int.push(
             'oracle'
