@@ -108,7 +108,8 @@ var draftParameters = {
     'phoenix',
     'terrorblade',
     'techies',
-    'oracle'],
+    'oracle',
+    'winter_wyvern'],
 	
 	lanes : ['Mid', 'Top', 'Bot', 'Woods', 'Roam'],
 	

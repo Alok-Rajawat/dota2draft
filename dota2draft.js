@@ -927,7 +927,8 @@ function setupHeroPool(room, version) {
             'earth_spirit'
         );
         room.heroes.int.push(
-            'oracle'
+            'oracle',
+            'winter_wyvern'
         );
     }
 }
