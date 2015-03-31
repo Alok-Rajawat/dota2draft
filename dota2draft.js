@@ -50,6 +50,8 @@ server.listen(9000);
 app.use('/files', express.static(__dirname + '/files'));
 
 app.get('/:name(index|)', function (req, res, next) {
+	var cm = (freeRoom["cm"] == null) ? 0 : 1;
+	var cd = (freeRoom["cd"] == null) ? 0 : 1;
     res.render('index', {
         cfg : cfg,
         title : 'Dota 2 Draft',
@@ -57,7 +59,9 @@ app.get('/:name(index|)', function (req, res, next) {
         drafts_started_count : draftServer.getStartCount(),
         drafts_running_count : draftServer.getRoomsCount(rooms),
         redrafts_count : draftServer.getRedraftCount(),
-        drafts_ended_count : draftServer.getEndCount()
+        drafts_ended_count : draftServer.getEndCount(),
+		cm_waiting : cm,
+		cd_waiting : cd
     });
 });
 

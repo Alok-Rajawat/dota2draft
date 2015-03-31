@@ -24,6 +24,10 @@
 
                     <br />
 
+                    <h3>( 31/03/2015 )</h3>
+                    <ul>
+                        <li>Added indication if someone is waiting in CM or CD.</li>
+                    </ul>
                     <h3>( 17/02/2015 )</h3>
                     <ul>
                         <li>Added Winter Wyvern to CD.</li>
@@ -41,10 +45,6 @@
                         <li>Added Broodmother & Phoenix to CM.</li>
                         <li>CD now has all heroes.</li>
                         <li>Added Oracle to CD.</li>
-                    </ul>
-                    <h3>( 26/10/2014 )</h3>
-                    <ul>
-                        <li>Revert change to final ban phase (6.82 change never live).</li>
                     </ul>
 
                 </section>
@@ -69,10 +69,9 @@
                     <header><h1>Drafts</h1></header>
                     <h2 id="nicknameH2">Nickname</h2><input id="nickname" type="text" name="nickname"/>
 
-                    <div id="mode" class="centered"><input id="cm" type="radio" name="radio" checked="checked"/><label for="cm"
-                                                                                                      id="cmLabel">Captain's
-                        Mode</label><input id="cd" type="radio" name="radio"/><label for="cd" id="cdLabel">Captain's
-                        Draft</label></div>
+					
+                    <div id="mode" class="centered"><input id="cm" type="radio" name="radio" checked="checked"/>Game Mode <label for="cm"
+                                                                                                      id="cmLabel">CM ({{cm_waiting}})</label><input id="cd" type="radio" name="radio"/><label for="cd" id="cdLabel">CD ({{cd_waiting}})</label></div>
                     <h2 id="randomRoomH2">Random Room</h2>
                     <div class="centered">
                         <button id="randomRoomButton">Start</button>
