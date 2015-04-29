@@ -923,7 +923,8 @@ function setupHeroPool(room, version) {
         'outlord_destroyer',
         'shadow_demon',
         'techies',
-        'visage'
+        'visage',
+        'winter_wyvern'
     );
 
     if (version == 'Latest') {
@@ -931,8 +932,7 @@ function setupHeroPool(room, version) {
             'earth_spirit'
         );
         room.heroes.int.push(
-            'oracle',
-            'winter_wyvern'
+            'oracle'
         );
     }
 }
