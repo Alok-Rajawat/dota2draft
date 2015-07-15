@@ -18,6 +18,6 @@ The web server is a node.js server using express. It communicates with clients u
 * `make prod` uses forever to launch a node.js daemon.
 * `make stop` is ending a previous forever run.
 * `make clean` is removing all node packages.
-* 
+
 ## License
-Copyright 2013-2014 Vincent 'Philaeux' Lamotte
+[The MIT License](http://opensource.org/licenses/MIT)
