@@ -319,10 +319,20 @@ a
 
 #links .fb-like
 {
-    width : 50%;
     margin : auto;
-    padding-left: 20px;
     padding-top: 10px;
+    margin-bottom: -10px;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
+}
+
+#links .gplus
+{
+    margin : auto;
+    margin-left : auto;
+    margin-right : auto;
+    text-align : center;
 }
 
 #links a

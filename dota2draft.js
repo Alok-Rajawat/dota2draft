@@ -879,7 +879,6 @@ function setupHeroPool(room, version) {
         'nyx_assassin',
         'slark',
         'ember_spirit',
-        'terrorblade',
         'medusa',
         'bloodseeker',
         'broodmother',
@@ -930,6 +929,9 @@ function setupHeroPool(room, version) {
     if (version == 'Latest') {
         room.heroes.str.push(
             'earth_spirit'
+        );
+        room.heroes.agi.push(
+            'terrorblade'
         );
         room.heroes.int.push(
             'oracle'
