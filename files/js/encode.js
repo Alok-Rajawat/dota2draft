@@ -109,7 +109,8 @@ var draftParameters = {
     'terrorblade',
     'techies',
     'oracle',
-    'winter_wyvern'],
+    'winter_wyvern',
+	'arc_warden'],
 	
 	lanes : ['Mid', 'Top', 'Bot', 'Woods', 'Roam'],
 	

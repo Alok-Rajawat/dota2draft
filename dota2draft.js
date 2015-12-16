@@ -839,7 +839,6 @@ function setupHeroPool(room, version) {
         'skeleton_king',
         'lifestealer',
         'night_stalker',
-        'doom_bringer',
         'spirit_breaker',
         'lycanthrope',
         'chaos_knight',
@@ -847,7 +846,8 @@ function setupHeroPool(room, version) {
         'magnus',
         'legion_commander',
         'abaddon',
-        'phoenix'
+        'phoenix',
+        'earth_spirit'
     );
     room.heroes.agi.push(
         'anti_mage',
@@ -856,20 +856,17 @@ function setupHeroPool(room, version) {
         'mirana',
         'morphling',
         'vengeful_spirit',
-        'riki',
         'sniper',
         'templar_assassin',
         'luna',
         'bounty_hunter',
         'ursa',
         'gyrocopter',
-        'lone_druid',
         'naga_siren',
         'troll_warlord',
         'shadow_fiend',
         'razor',
         'venomancer',
-        'faceless_void',
         'phantom_assassin',
         'viper',
         'clinkz',
@@ -882,7 +879,8 @@ function setupHeroPool(room, version) {
         'medusa',
         'bloodseeker',
         'broodmother',
-        'phantom_lancer'
+        'phantom_lancer',
+        'terrorblade'
     );
     room.heroes.int.push(
         'crystal_maiden',
@@ -911,7 +909,6 @@ function setupHeroPool(room, version) {
         'necrolyte',
         'warlock',
         'queen_of_pain',
-        'death_prophet',
         'pugna',
         'dazzle',
         'leshrac',
@@ -923,18 +920,22 @@ function setupHeroPool(room, version) {
         'shadow_demon',
         'techies',
         'visage',
-        'winter_wyvern'
+        'oracle'
     );
 
     if (version == 'Latest') {
         room.heroes.str.push(
-            'earth_spirit'
+            'doom_bringer'
         );
         room.heroes.agi.push(
-            'terrorblade'
+            'faceless_void',
+            'lone_druid',
+            'riki',
+            'arc_warden'
         );
         room.heroes.int.push(
-            'oracle'
+            'winter_wyvern',
+            'death_prophet'
         );
     }
 }
