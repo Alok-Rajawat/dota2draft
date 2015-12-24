@@ -847,7 +847,8 @@ function setupHeroPool(room, version) {
         'legion_commander',
         'abaddon',
         'phoenix',
-        'earth_spirit'
+        'earth_spirit',
+        'doom_bringer'
     );
     room.heroes.agi.push(
         'anti_mage',
@@ -880,7 +881,9 @@ function setupHeroPool(room, version) {
         'bloodseeker',
         'broodmother',
         'phantom_lancer',
-        'terrorblade'
+        'terrorblade',
+        'faceless_void',
+        'lone_druid'
     );
     room.heroes.int.push(
         'crystal_maiden',
@@ -920,22 +923,15 @@ function setupHeroPool(room, version) {
         'shadow_demon',
         'techies',
         'visage',
-        'oracle'
+        'oracle',
+        'winter_wyvern',
+        'death_prophet'
     );
 
     if (version == 'Latest') {
-        room.heroes.str.push(
-            'doom_bringer'
-        );
         room.heroes.agi.push(
-            'faceless_void',
-            'lone_druid',
             'riki',
             'arc_warden'
-        );
-        room.heroes.int.push(
-            'winter_wyvern',
-            'death_prophet'
         );
     }
 }
