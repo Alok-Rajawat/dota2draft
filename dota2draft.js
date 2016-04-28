@@ -883,7 +883,8 @@ function setupHeroPool(room, version) {
         'phantom_lancer',
         'terrorblade',
         'faceless_void',
-        'lone_druid'
+        'lone_druid',
+        'riki'
     );
     room.heroes.int.push(
         'crystal_maiden',
@@ -930,7 +931,6 @@ function setupHeroPool(room, version) {
 
     if (version == 'Latest') {
         room.heroes.agi.push(
-            'riki',
             'arc_warden'
         );
     }
@@ -964,10 +964,10 @@ function setupStartingTime(room) {
 
     if (room.mode == "cm") {
         room.globalTime = 29;
-        room.radiant.time.min = 1;
-        room.radiant.time.sec = 50;
-        room.dire.time.min = 1;
-        room.dire.time.sec = 50;
+        room.radiant.time.min = 2;
+        room.radiant.time.sec = 10;
+        room.dire.time.min = 2;
+        room.dire.time.sec = 10;
     }
 
     if (room.mode == "cd") {
@@ -1004,20 +1004,24 @@ function processHeroChoice(room, hero) {
         if (spectatorUUID == 'clone') continue;
         room.spectators[spectatorUUID].emit('choose_hero', { player : pickSide.player, choice : hero, action : room.action});
     }
-	
+
 	// Compute new state
+    if (room.mode == "cd") {
+        room.globalTime = 0;
+    } else {
+        room.globalTime = 29;
+    }
+
 	if (room.action == 'Ban') {
 		pickSide.banlist[pickSide.banlist.length] = hero;
 		pickSide.ban++;
-		room.globalTime = 29;
 		if ((pickSide.ban == 2 && unpickSide.ban == 2 && room.mode == "cm")
             || (pickSide.ban == 3 && unpickSide.ban == 3 && room.mode == "cd")
             || (pickSide.ban == 4 && unpickSide.ban == 4)
             || (pickSide.ban == 5 && unpickSide.ban == 5)) {
 			room.action = 'Pick';
-            room.globalTime = 39;
         }
-        if (!(pickSide.ban == 4 && unpickSide.ban == 4)) {
+        if (!(pickSide.ban == 5 && unpickSide.ban == 5)) {
             room.pickingSide = unpickSide.name;
         }
 	} else {
@@ -1030,19 +1034,14 @@ function processHeroChoice(room, hero) {
             draftServer.incrementEndCount();
         } else {
             if (room.mode == "cm") {
-                if (pickSide.pick == 2 && unpickSide.pick == 2) {
+                if ((pickSide.pick == 2 && unpickSide.pick == 2)
+                    || (pickSide.pick == 4 && unpickSide.pick == 4)) {
                     room.action = 'Ban';
-                    room.globalTime = 29;
-                } else if (pickSide.pick == 4 && unpickSide.pick == 4) {
                     room.pickingSide = unpickSide.name;
-                    room.action = 'Ban';
-                    room.globalTime = 29;
                 } else {
-                    if (pickSide.pick != unpickSide.pick
-                        || pickSide.pick == 3){
+                    if (!(pickSide.pick == 1 && unpickSide.pick == 1)){
                         room.pickingSide = unpickSide.name;
                     }
-                    room.globalTime = 39;
                 }
             } else if (room.mode == "cd") {
                 if ((pickSide.pick == 1 && unpickSide.pick == 0)
@@ -1055,10 +1054,6 @@ function processHeroChoice(room, hero) {
             }
         }
 	}
-
-    if (room.mode == "cd") {
-        room.globalTime = 0;
-    }
 	
 	// Send new state
 	pickSide.socket.emit('new_state', { action : room.action, side : room.pickingSide , radiantTime : room.radiant.time, direTime : room.dire.time, globalTime : room.globalTime});
