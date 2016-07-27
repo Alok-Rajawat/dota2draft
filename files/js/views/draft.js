@@ -104,7 +104,7 @@ jQuery(function ($) {
 
     });
 
-    writeToChat('>>> Connecting to ' + mode + ' room...');
+    writeToChat('>>> Connecting to room...');
 
     // CONNECTION
 
@@ -148,7 +148,13 @@ jQuery(function ($) {
         writeToChat('>>> ' + getOpponentNickname() + ' connected. Waiting players to be ready.');
         status = 'WaitingForReady';
         roomId = data.id;
-        console.log(roomId);
+        mode = data.mode
+        if (mode === 'cd') {
+            $('#radiantBan4').hide();
+            $('#radiantBan5').hide();
+            $('#direBan4').hide();
+            $('#direBan5').hide();
+        }
         $("#spectatorLink").click(function (){
             window.open('http://localhost:9000/spectate?id=' + roomId, '_blank');
         });

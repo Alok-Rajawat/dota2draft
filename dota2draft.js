@@ -260,8 +260,8 @@ io.sockets.on('connection', function (socket) {
                     socketData.roomId = privRoom.id;
 					draftServer.removePrivateWaitingRoom(privRoom.id);
 					socket.emit('join_success');
-					privRoom.player1.emit('player_join', {nick : data.nick, id: socketData.roomId});
-					socket.emit('player_join', {nick : privRoom.player1nickname, id: socketData.roomId});
+					privRoom.player1.emit('player_join', {nick : data.nick, id: socketData.roomId, mode: privRoom.mode});
+					socket.emit('player_join', {nick : privRoom.player1nickname, id: socketData.roomId, mode: privRoom.mode});
 				}
 			}
 		} else {
