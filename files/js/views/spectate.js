@@ -44,8 +44,9 @@ jQuery(function ($) {
 
     var players = { player1 : { name : "Anonymous", side : null }, player2 : { name : "Anonymous", side : null}};
     var counts = { Radiant : { Pick : 0, Ban : 0 }, Dire : { Pick : 0, Ban : 0 }};
-    var firstPick ="";
+    var firstPick ="Radiant";
     var pickSide = "";
+    var mode = "";
 
     function getNickname(player) {
         if (players[player].name != 'Anonymous')
@@ -70,12 +71,15 @@ jQuery(function ($) {
     });
 
     socket.on('spectate_valid', function(data) {
+        console.log(data)
         if (data.player1nickname != null)
             players.player1.name = data.player1nickname;
         if (data.player2nickname != null)
             players.player2.name = data.player2nickname;
+        mode = data.mode;
 
         setupHeroes(data.heroes);
+        setupPickBanLayout();
 
         if (data.radiant.player == 'player1'){
             players.player1.side = 'Radiant';
@@ -115,6 +119,28 @@ jQuery(function ($) {
 
         writeToChat('>>> You are now spectating ' + getNickname("player1") + ' against ' + getNickname("player2") + '.');
     });
+
+    function setupPickBanLayout() {
+        if (mode === 'cd') {
+            $('#radiantBan4').hide();
+            $('#radiantBan5').hide();
+            $('#direBan4').hide();
+            $('#direBan5').hide();
+            if (firstPick === 'Radiant') {
+                $('.cdRFPbr').show();
+                $('.cdRSPbr').hide();
+
+                $('.cdDFPbr').hide();
+                $('.cdDSPbr').show();
+            } else {
+                $('.cdRFPbr').hide();
+                $('.cdRSPbr').show();
+
+                $('.cdDSPbr').hide();
+                $('.cdDFPbr').show();
+            }
+        }
+    }
 
     socket.on('player_left', function(data) {
         if (timeManager != null) clearInterval(timeManager);
@@ -191,6 +217,7 @@ jQuery(function ($) {
 
         pickSide = side;
         firstPick = side;
+        setupPickBanLayout();
         setupTime({ min : 0, sec : 0}, { min : 0, sec : 0}, { min : 0, sec : 0});
         timeManager = setInterval(actualisation, 1000);
 

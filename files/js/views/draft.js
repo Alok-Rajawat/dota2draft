@@ -41,6 +41,7 @@ jQuery(function ($) {
     var opponentNickname = null;
     var mode = 'cm';
     var type = 'rand';
+    var roomId = 0;
     var id = null;
 
     if (typeof(parameters.nick) != 'undefined')
@@ -49,6 +50,12 @@ jQuery(function ($) {
         var aux = decodeURI(parameters.mode);
         if (aux == 'cm' || aux == 'cd')
             mode = aux;
+    }
+    if (mode === 'cd') {
+        $('#radiantBan4').hide();
+        $('#radiantBan5').hide();
+        $('#direBan4').hide();
+        $('#direBan5').hide();
     }
     if (typeof(parameters.type) != 'undefined') {
         var aux = decodeURI(parameters.type);
@@ -140,6 +147,11 @@ jQuery(function ($) {
         opponentNickname = data.nick;
         writeToChat('>>> ' + getOpponentNickname() + ' connected. Waiting players to be ready.');
         status = 'WaitingForReady';
+        roomId = data.id;
+        console.log(roomId);
+        $("#spectatorLink").click(function (){
+            window.open('http://localhost:9000/spectate?id=' + roomId, '_blank');
+        });
         $("#readyButton").show();
         highlightTab();
     });
@@ -342,6 +354,24 @@ jQuery(function ($) {
         }
     });
 
+    function setupPickBanLayout() {
+        if (mode === 'cd') {
+            if (pickingSide === 'Radiant') {
+                $('.cdRFPbr').show();
+                $('.cdRSPbr').hide();
+
+                $('.cdDFPbr').hide();
+                $('.cdDSPbr').show();
+            } else {
+                $('.cdRFPbr').hide();
+                $('.cdRSPbr').show();
+
+                $('.cdDSPbr').hide();
+                $('.cdDFPbr').show();
+            }
+        }
+    }
+
     socket.on('begin_choose_value', function (data) {
         $("#radiantButton").hide();
         $("#opponentChooseButton").hide();
@@ -362,6 +392,7 @@ jQuery(function ($) {
             } else {
                 writeToChat('>>> ' + getOpponentNickname() + ' chooses ' + data.side + randominfo + ' to pick first.');
             }
+            setupPickBanLayout();
             startDraft();
         } else {
             if (data.player != 'you') {

@@ -1058,3 +1058,11 @@ table
 #roomTable td:nth-of-type(3), #roomTable td:nth-of-type(4), #roomTable td:nth-of-type(5) {
     text-align: center;
 }
+
+.cdRFPbr, .cdDFPbr {
+    display: none;
+}
+
+#spectatorLink {
+    text-decoration: underline;
+}

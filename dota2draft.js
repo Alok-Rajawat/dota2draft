@@ -260,8 +260,8 @@ io.sockets.on('connection', function (socket) {
                     socketData.roomId = privRoom.id;
 					draftServer.removePrivateWaitingRoom(privRoom.id);
 					socket.emit('join_success');
-					privRoom.player1.emit('player_join', {nick : data.nick});
-					socket.emit('player_join', {nick : privRoom.player1nickname});
+					privRoom.player1.emit('player_join', {nick : data.nick, id: socketData.roomId});
+					socket.emit('player_join', {nick : privRoom.player1nickname, id: socketData.roomId});
 				}
 			}
 		} else {
@@ -281,8 +281,8 @@ io.sockets.on('connection', function (socket) {
 				rooms[socketData.roomId] = freeRoom[data.mode];
                 rooms[socketData.roomId].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
 				freeRoom[data.mode] = null;
-                payload = { nick : rooms[socketData.roomId].player1nickname };
-                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick});
+                payload = { nick : rooms[socketData.roomId].player1nickname, id: socketData.roomId };
+                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick, id: socketData.roomId});
                 socket.emit('join_success');
                 socket.emit('player_join', payload );
 			}
