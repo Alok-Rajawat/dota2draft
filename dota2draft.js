@@ -281,8 +281,8 @@ io.sockets.on('connection', function (socket) {
 				rooms[socketData.roomId] = freeRoom[data.mode];
                 rooms[socketData.roomId].decreaseTimer = getIntervalFunction(freeRoom[data.mode].id, 1000);
 				freeRoom[data.mode] = null;
-                payload = { nick : rooms[socketData.roomId].player1nickname, id: socketData.roomId };
-                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick, id: socketData.roomId});
+                payload = { nick : rooms[socketData.roomId].player1nickname, id: socketData.roomId, mode: data.mode };
+                rooms[socketData.roomId].player1.emit('player_join', {nick : data.nick, id: socketData.roomId, mode: data.mode});
                 socket.emit('join_success');
                 socket.emit('player_join', payload );
 			}
@@ -930,6 +930,9 @@ function setupHeroPool(room, version) {
     );
 
     if (version == 'Latest') {
+        room.heroes.str.push(
+            'underlord'
+        );
         room.heroes.agi.push(
             'arc_warden'
         );

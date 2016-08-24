@@ -148,6 +148,7 @@ jQuery(function ($) {
         writeToChat('>>> ' + getOpponentNickname() + ' connected. Waiting players to be ready.');
         status = 'WaitingForReady';
         roomId = data.id;
+        console.log(data)
         mode = data.mode
         if (mode === 'cd') {
             $('#radiantBan4').hide();
@@ -248,6 +249,7 @@ jQuery(function ($) {
     });
 
     socket.on('setup_mode', function (data) {
+        console.log(data)
         setupVersion(data.heroes);
         setupTime(data.globalTime, data.radiantTime, data.direTime);
     });
@@ -361,6 +363,7 @@ jQuery(function ($) {
     });
 
     function setupPickBanLayout() {
+        console.log('here: ' + mode);
         if (mode === 'cd') {
             if (pickingSide === 'Radiant') {
                 $('.cdRFPbr').show();

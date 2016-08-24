@@ -88,7 +88,7 @@ body
 
 #bodyFirstBorder
 {
-	width : 980px;
+	width : 1092px;
 	margin-top : 20px;
 	margin-left : auto;
 	margin-right : auto;
@@ -99,7 +99,7 @@ body
 
 #bodySecondBorder
 {
-	width : 960px;
+	width : 1072px;
 	margin-left : auto;
 	margin-right : auto;
 	border : 10px #1d1d1b solid;
@@ -109,7 +109,7 @@ body
 
 #body 
 {
-	width : 952px;
+	width : 1066px;
 	border-radius: 10px;
 	color : #cdcdcd;
 	border : 4px #660000 ridge;
@@ -124,7 +124,7 @@ a
 /* Index props */
 #newsAndStats
 {
-	width : 670px;
+	width : 726px;
 	height : 100%;
 	display: inline-block;
 	vertical-align: top;
@@ -133,7 +133,7 @@ a
 
 #draftAndLinks
 {
-    width : 278px;
+    width : 338px;
     height : 100%;
     display: inline-block;
     margin-left : -4px;
@@ -367,7 +367,7 @@ a
 
 #heroes
 {
-    width : 50%;
+    width : 590px;
     height : 100%;
     display: inline-block;
     vertical-align : top;
@@ -382,7 +382,7 @@ a
 
 #heroesRadiant, #heroesDire
 {
-    width : 235px;
+    width : 290px;
     height : 100%;
     display : inline-block;
 }
@@ -455,7 +455,7 @@ a
 
 #right
 {
-    width : 50%;
+    width : 476px;
     height : 100%;
     display: inline-block;
     margin-left : -6px;
