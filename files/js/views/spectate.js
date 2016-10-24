@@ -126,8 +126,6 @@ jQuery(function ($) {
             $('#radiantBan5').hide();
             $('#direBan4').hide();
             $('#direBan5').hide();
-            // Temporary fix for Valence
-            /*
             if (firstPick === 'Radiant') {
                 $('.cdRFPbr').show();
                 $('.cdRSPbr').hide();
@@ -140,7 +138,7 @@ jQuery(function ($) {
 
                 $('.cdDSPbr').hide();
                 $('.cdDFPbr').show();
-            }*/
+            }
         }
     }
 
