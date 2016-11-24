@@ -5,7 +5,7 @@ Dota 2 Draft
 Web application to simulate the drafting sequence of Dota 2 for Captain's Mode and Captain's Draft. The web site is designed for people to practice the sequence with friends or strangers.
 
 ## Deployment
-A running version of dota 2 draft is currently hosted at [http://dota2draft.the-cluster.org](http://dota2draft.the-cluster.org) and [http://dota2draft.net](http://dota2draft.net). If the website is down, feel free to poke me on twitter [@Philaeux](https://twitter.com/philaeux) or by mail [philaeux@the-cluster.org](philaeux@the-cluster.org).
+A running version of dota 2 draft is currently hosted at [https://dota2draft.the-cluster.org](https://dota2draft.the-cluster.org) and [https://dota2draft.net](https://dota2draft.net). If the website is down, feel free to poke me on twitter [@Philaeux](https://twitter.com/philaeux) or by mail [philaeux@the-cluster.org](philaeux@the-cluster.org).
 
 ## Code
 
