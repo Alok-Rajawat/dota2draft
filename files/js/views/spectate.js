@@ -40,7 +40,7 @@ jQuery(function ($) {
     // Socket spectate
     writeToChat('>>> Connecting to game ' + id);
 
-    var socket = io.connect('http://' + document.domain + ':9000', { reconnect : false });
+    var socket = io.connect(document.location.protocol + '//' + document.domain + ':9000', { reconnect : false });
 
     var players = { player1 : { name : "Anonymous", side : null }, player2 : { name : "Anonymous", side : null}};
     var counts = { Radiant : { Pick : 0, Ban : 0 }, Dire : { Pick : 0, Ban : 0 }};

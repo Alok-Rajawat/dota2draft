@@ -80,7 +80,7 @@ jQuery(function ($) {
     }
 
     // NETWORK SETUP
-    var socket = io.connect('http://' + document.domain + ':9000', { reconnect : false });
+    var socket = io.connect(document.location.protocol + '//' + document.domain + ':9000', { reconnect : false });
     var connected = 0;
     var status = 'Connecting';
 
@@ -157,7 +157,7 @@ jQuery(function ($) {
             $('#direBan5').hide();
         }
         $("#spectatorLink").click(function (){
-            window.open('http://localhost:9000/spectate?id=' + roomId, '_blank');
+            window.open(document.location.protocol + '//' + document.domain + '9000/spectate?id=' + roomId, '_blank');
         });
         $("#readyButton").show();
         highlightTab();
