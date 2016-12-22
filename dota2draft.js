@@ -824,7 +824,6 @@ function setupHeroPool(room, version) {
         'huskar',
         'alchemist',
         'brewmaster',
-        'treant_protector',
         'whisp',
         'centaur',
         'shredder',
@@ -840,7 +839,6 @@ function setupHeroPool(room, version) {
         'lifestealer',
         'night_stalker',
         'spirit_breaker',
-        'lycanthrope',
         'chaos_knight',
         'undying',
         'magnus',
@@ -848,7 +846,8 @@ function setupHeroPool(room, version) {
         'abaddon',
         'phoenix',
         'earth_spirit',
-        'doom_bringer'
+        'doom_bringer',
+        'underlord'
     );
     room.heroes.agi.push(
         'anti_mage',
@@ -884,7 +883,8 @@ function setupHeroPool(room, version) {
         'terrorblade',
         'faceless_void',
         'lone_druid',
-        'riki'
+        'riki',
+        'arc_warden'
     );
     room.heroes.int.push(
         'crystal_maiden',
@@ -922,7 +922,6 @@ function setupHeroPool(room, version) {
         'invoker',
         'outlord_destroyer',
         'shadow_demon',
-        'techies',
         'visage',
         'oracle',
         'winter_wyvern',
@@ -931,11 +930,15 @@ function setupHeroPool(room, version) {
 
     if (version == 'Latest') {
         room.heroes.str.push(
-            'underlord'
+            'lycanthrope',
+            'treant_protector'
         );
         room.heroes.agi.push(
-            'arc_warden'
+            'monkey_king'
         );
+        room.heroes.int.push(
+            'techies'
+        )
     }
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 
 {{>head}}
@@ -9,7 +9,7 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 {{#draft}}
 <script type="text/javascript" src="/files/js/views/draft.js"></script>
-<audio id="dingSound" controls="false" src="/files/sound/ding.wav"></audio>
+<audio id="dingSound" controls="false" src="/files/sound/ding.wav" volume="0.5"></audio>
 {{/draft}}
 {{^draft}}
 <script type="text/javascript" src="/files/js/views/spectate.js"></script>
@@ -80,6 +80,7 @@
                 <img class="pictureArea locked" id="naga_siren" src="/files/image/naga_siren.png" title="Naga Siren">
                 <img class="pictureArea locked" id="troll_warlord" src="/files/image/troll_warlord.png" title="Troll Warlord">
                 <img class="pictureArea locked" id="ember_spirit" src="/files/image/ember_spirit.png" title="Ember Spirit">
+                <img class="pictureArea locked" id="monkey_king" src="/files/image/monkey_king.png" title="Monkey King">
             </section>
 
             <section id="radiantINT">

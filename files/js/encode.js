@@ -111,7 +111,8 @@ var draftParameters = {
     'oracle',
     'winter_wyvern',
 	'arc_warden',
-	'underlord'],
+	'underlord',
+	'monkey_king'],
 	
 	lanes : ['Mid', 'Top', 'Bot', 'Woods', 'Roam'],
 	
