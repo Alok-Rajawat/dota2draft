@@ -884,7 +884,8 @@ function setupHeroPool(room, version) {
         'faceless_void',
         'lone_druid',
         'riki',
-        'arc_warden'
+        'arc_warden',
+        'monkey_king'
     );
     room.heroes.int.push(
         'crystal_maiden',
@@ -932,9 +933,6 @@ function setupHeroPool(room, version) {
         room.heroes.str.push(
             'lycanthrope',
             'treant_protector'
-        );
-        room.heroes.agi.push(
-            'monkey_king'
         );
         room.heroes.int.push(
             'techies'
