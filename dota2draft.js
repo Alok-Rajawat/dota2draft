@@ -847,7 +847,9 @@ function setupHeroPool(room, version) {
         'phoenix',
         'earth_spirit',
         'doom_bringer',
-        'underlord'
+        'underlord',
+        'lycanthrope',
+        'treant_protector'
     );
     room.heroes.agi.push(
         'anti_mage',
@@ -930,10 +932,6 @@ function setupHeroPool(room, version) {
     );
 
     if (version == 'Latest') {
-        room.heroes.str.push(
-            'lycanthrope',
-            'treant_protector'
-        );
         room.heroes.int.push(
             'techies'
         )
